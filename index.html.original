@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VELOX - Protection Beyond Compare</title>
+    <link rel="icon" type="image/svg+xml" href="src/assets/images/Logo.svg" />
+    <script type="module" crossorigin src="./assets/index-A8fTCj9w.js?v=1.2"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-B2XwqEbY.css?v=1.2">
+    <style>
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-15px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+      .floating-box {
+        animation: float 4s ease-in-out infinite;
+      }
+      @keyframes pulseShadow {
+        0% {
+          transform: translate(-50%, 0) scale(0.85);
+          opacity: 0.4;
+          filter: blur(4px);
+        }
+        50% {
+          transform: translate(-50%, 0) scale(1.15);
+          opacity: 0.15;
+          filter: blur(8px);
+        }
+        100% {
+          transform: translate(-50%, 0) scale(0.85);
+          opacity: 0.4;
+          filter: blur(4px);
+        }
+      }
+      .floating-shadow {
+        animation: pulseShadow 4s ease-in-out infinite;
+        transform-origin: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
