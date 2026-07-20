@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>VELOX - Protection Beyond Compare</title>
+    <link rel="icon" type="image/svg+xml" href="/src/assets/images/logo.svg" />
+    <!-- Montserrat & Roboto Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        veloxDark: '#070b12',
+                        veloxCard: '#101726',
+                        veloxBorder: '#1e293b',
+                        veloxBlue: '#00a8ff',
+                        veloxCyan: '#00e5ff',
+                        veloxGold: '#ffb700',
+                    },
+                    boxShadow: {
+                        neonCyan: '0 0 15px rgba(0, 229, 255, 0.4)',
+                        neonBlue: '0 0 20px rgba(0, 168, 255, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Carbon texture background */
+        .carbon-bg {
+            background-color: #070b12;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 4px);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070b12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00a8ff;
+        }
+        /* Smooth RTL adjustments */
+        body.rtl {
+            direction: rtl;
+        }
+    </style>
+</head>
+<body class="carbon-bg text-white min-h-screen font-sans overflow-x-hidden antialiased">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 bg-[#060b11]/95 backdrop-blur-md border-b border-veloxBorder transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Navigation links -->
+            <nav class="hidden md:flex space-x-8 rtl:space-x-reverse" id="main-nav">
+                <a href="#products-section" class="text-[#a0b4c8] hover:text-veloxCyan font-montserrat font-semibold text-sm transition-colors duration-200" data-i18n="navProducts">Produits</a>
+                <a href="#simulator-section" class="text-[#a0b4c8] hover:text-veloxCyan font-montserrat font-semibold text-sm transition-colors duration-200" data-i18n="navSimulator">Simulateur</a>
+                <a href="#diagnostic-section" class="text-[#a0b4c8] hover:text-veloxCyan font-montserrat font-semibold text-sm transition-colors duration-200" data-i18n="navDiagnostic">Diagnostic</a>
+                <a href="#reviews-section" class="text-[#a0b4c8] hover:text-veloxCyan font-montserrat font-semibold text-sm transition-colors duration-200" data-i18n="navReviews">Avis</a>
+            </nav>
+
+            <!-- Logo -->
+            <a href="#" class="flex items-center">
+                <img src="/src/assets/images/logo.svg" alt="VELOX Logo" class="h-20 w-auto object-contain transition-transform duration-300 hover:scale-105" />
+            </a>
+
+            <!-- Right Controls: Lang & Cart -->
+            <div class="flex items-center gap-4">
+                
+                <!-- Language Selector -->
+                <div class="relative inline-block text-left">
+                    <select id="lang-selector" class="bg-veloxCard border border-veloxBorder text-[#a0b4c8] text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-veloxCyan cursor-pointer font-semibold">
+                        <option value="fr">🇫🇷 FR</option>
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="ar">🇸🇦 AR</option>
+                    </select>
+                </div>
+
+                <!-- Shopping Cart Icon -->
+                <button id="cart-toggle-btn" class="relative p-2.5 bg-veloxCard border border-veloxBorder rounded-xl hover:border-veloxCyan transition-all duration-300 group">
+                    <svg class="w-5 h-5 text-[#a0b4c8] group-hover:text-veloxCyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <!-- Cart Badge -->
+                    <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-veloxCyan text-black text-xs font-black h-5 w-5 rounded-full flex items-center justify-center transform scale-0 transition-transform duration-300">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative py-20 px-4 sm:px-6 lg:px-8 text-center border-b border-veloxBorder overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-veloxBlue/5 to-transparent pointer-events-none"></div>
+        <div class="relative max-w-4xl mx-auto z-10">
+            <span class="text-xs uppercase tracking-widest text-veloxCyan font-bold font-montserrat px-3 py-1 bg-veloxCyan/10 rounded-full" data-i18n="heroBadge">AEROSPACE GRADE NANOTECHNOLOGY</span>
+            <h1 class="mt-6 text-4xl sm:text-6xl font-montserrat font-black tracking-tight text-white uppercase leading-tight" data-i18n="heroTitle">
+                Protection Beyond Compare
+            </h1>
+            <p class="mt-6 text-lg text-[#a0b4c8] font-light max-w-2xl mx-auto" data-i18n="heroSub">
+                La barrière nanotechnologique ultime pour votre véhicule. Brillance miroir, hydrophobie extrême et dureté certifiée jusqu'à 12H.
+            </p>
+            <div class="mt-10 flex flex-wrap justify-center gap-4">
+                <a href="#products-section" class="px-8 py-4 bg-gradient-to-r from-veloxBlue to-veloxCyan text-black font-montserrat font-bold rounded-full shadow-neonCyan hover:opacity-90 transform hover:-translate-y-0.5 transition-all duration-300" data-i18n="heroBtnExplore">Explorer les Produits</a>
+                <a href="#diagnostic-section" class="px-8 py-4 bg-veloxCard border border-veloxBorder text-white font-montserrat font-semibold rounded-full hover:border-veloxCyan hover:text-veloxCyan transform hover:-translate-y-0.5 transition-all duration-300" data-i18n="heroBtnDiag">Diagnostic Intelligent</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE CAR COATING SIMULATOR -->
+    <section id="simulator-section" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-veloxBorder">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-montserrat font-black text-white tracking-wide uppercase" data-i18n="simTitle">SIMULATEUR DE PROTECTION</h2>
+            <p class="text-[#a0b4c8] mt-2 max-w-xl mx-auto text-sm" data-i18n="simSubtitle">Faites glisser le curseur pour voir la différence de protection et choisissez la couleur de votre véhicule</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <!-- Controls Sidebar -->
+            <div class="lg:col-span-3 bg-veloxCard border border-veloxBorder p-6 rounded-2xl flex flex-col gap-6">
+                <div>
+                    <h4 class="font-montserrat font-bold text-sm tracking-wider uppercase mb-3 text-veloxCyan" data-i18n="simColorTitle">Couleur du véhicule</h4>
+                    <div class="flex gap-2.5">
+                        <button onclick="changeCarColor('#bc1a2c', 'Sunset Crimson')" class="w-8 h-8 rounded-full bg-[#bc1a2c] border-2 border-transparent focus:border-white transition-all transform hover:scale-110" title="Sunset Crimson"></button>
+                        <button onclick="changeCarColor('#1e293b', 'Carbon Cyber')" class="w-8 h-8 rounded-full bg-[#1e293b] border-2 border-transparent focus:border-white transition-all transform hover:scale-110" title="Carbon Cyber"></button>
+                        <button onclick="changeCarColor('#0066cc', 'Electric Blue')" class="w-8 h-8 rounded-full bg-[#0066cc] border-2 border-transparent focus:border-white transition-all transform hover:scale-110" title="Electric Blue"></button>
+                        <button onclick="changeCarColor('#0f5132', 'Emerald Green')" class="w-8 h-8 rounded-full bg-[#0f5132] border-2 border-transparent focus:border-white transition-all transform hover:scale-110" title="Emerald Green"></button>
+                    </div>
+                    <p class="text-xs text-[#a0b4c8] mt-2 font-mono" id="car-color-label">Sunset Crimson</p>
+                </div>
+
+                <div class="border-t border-veloxBorder pt-4">
+                    <h4 class="font-montserrat font-bold text-sm tracking-wider uppercase mb-2 text-veloxCyan" data-i18n="simInfoTitle">Effets de la protection</h4>
+                    <ul class="text-xs text-[#a0b4c8] space-y-2">
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-veloxCyan"></span>
+                            <span data-i18n="simEffect1">Effet perlant hydrophobe 100%</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-veloxCyan"></span>
+                            <span data-i18n="simEffect2">Finition miroir ultra-brillante</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-veloxCyan"></span>
+                            <span data-i18n="simEffect3">Résistance poussière et rayures</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Interactive Simulator Screen -->
+            <div class="lg:col-span-9 bg-[#0b111a] border border-veloxBorder p-6 sm:p-10 rounded-2xl relative shadow-2xl">
+                
+                <!-- Label Overlay -->
+                <div class="flex justify-between text-xs font-mono text-[#a0b4c8] mb-4 slider-labels select-none">
+                    <span class="px-2 py-1 bg-red-950/40 text-red-400 rounded border border-red-900/30 font-bold uppercase" data-i18n="simLabelUncoated">Non Protégé (Dull & Wet)</span>
+                    <span class="px-2 py-1 bg-cyan-950/40 text-veloxCyan rounded border border-cyan-900/30 font-bold uppercase" data-i18n="simLabelCoated">VELOX BARRIER (Glossy & Hydrophobic)</span>
+                </div>
+
+                <!-- The Visual Container holding both layers -->
+                <div class="relative w-full h-64 sm:h-80 bg-slate-950 rounded-xl overflow-hidden shadow-inner flex items-center justify-center">
+                    
+                    <!-- Layer 1: UNPROTECTED CAR (Always visible underneath) -->
+                    <div class="absolute inset-0 flex items-center justify-center p-4">
+                        <div class="w-full max-w-2xl opacity-40 grayscale contrast-125 filter blur-[0.5px]">
+                            <!-- Sports Car SVG -->
+                            <svg viewBox="0 0 600 220" class="w-full h-auto transition-colors duration-500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g opacity="0.3">
+                                    <!-- Background Dust / Rain particles overlay on unprotected side -->
+                                    <circle cx="100" cy="80" r="1.5" fill="#a0b4c8" />
+                                    <circle cx="150" cy="150" r="2" fill="#a0b4c8" />
+                                    <circle cx="280" cy="60" r="1" fill="#a0b4c8" />
+                                    <circle cx="340" cy="140" r="2.5" fill="#a0b4c8" />
+                                </g>
+                                <!-- Car body path -->
+                                <path d="M 50 150 C 50 130, 80 120, 110 115 C 130 110, 150 90, 180 75 C 220 55, 270 50, 320 50 C 370 50, 420 65, 460 85 C 490 100, 520 100, 540 110 C 560 120, 570 135, 565 150 L 50 150 Z" class="sim-car-body" fill="#334155" />
+                                <!-- Wheels -->
+                                <circle cx="150" cy="150" r="35" fill="#1e293b" stroke="#475569" stroke-width="4" />
+                                <circle cx="450" cy="150" r="35" fill="#1e293b" stroke="#475569" stroke-width="4" />
+                                <circle cx="150" cy="150" r="15" fill="#0f172a" />
+                                <circle cx="450" cy="150" r="15" fill="#0f172a" />
+                                <!-- Windshield -->
+                                <path d="M 230 76 L 310 76 L 350 105 L 210 105 Z" fill="#0f172a" opacity="0.9" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Water stains and dust elements overlay for UNPROTECTED side -->
+                    <div class="absolute left-6 top-1/4 flex flex-col gap-2 pointer-events-none select-none opacity-80">
+                        <span class="text-[10px] text-red-400 font-mono" data-i18n="simWaterSpots">⚠️ Taches d'eau calcaire</span>
+                        <span class="text-[10px] text-red-400 font-mono" data-i18n="simOxidation">⚠️ Oxydation & Micro-rayures</span>
+                    </div>
+
+                    <!-- Layer 2: PROTECTED CAR (Clipped dynamic container) -->
+                    <div id="protected-mask" class="absolute inset-y-0 right-0 flex items-center justify-center overflow-hidden transition-all duration-75" style="width: 50%;">
+                        <!-- Inner wrapper to prevent squishing of the absolute children -->
+                        <div class="absolute right-0 top-0 bottom-0 w-[100%] h-full flex items-center justify-center p-4" id="protected-inner-wrapper">
+                            <div class="w-full max-w-2xl relative">
+                                <!-- Glowing background visual gradient -->
+                                <div class="absolute inset-0 bg-veloxBlue/10 filter blur-3xl rounded-full"></div>
+                                <!-- Shiny car SVG -->
+                                <svg viewBox="0 0 600 220" class="w-full h-auto relative z-10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- High Gloss Reflection Lines -->
+                                    <path d="M 180 75 C 220 55, 270 50, 320 50 C 370 50, 420 65, 460 85" stroke="white" stroke-width="2" opacity="0.4" stroke-dasharray="20,10" />
+                                    <!-- Car body -->
+                                    <path d="M 50 150 C 50 130, 80 120, 110 115 C 130 110, 150 90, 180 75 C 220 55, 270 50, 320 50 C 370 50, 420 65, 460 85 C 490 100, 520 100, 540 110 C 560 120, 570 135, 565 150 L 50 150 Z" class="sim-car-body" fill="#bc1a2c" />
+                                    <!-- Glow under body -->
+                                    <path d="M 80 152 L 530 152" stroke="#00e5ff" stroke-width="4" opacity="0.8" class="animate-pulse" />
+                                    <!-- Wheels with glowing details -->
+                                    <circle cx="150" cy="150" r="35" fill="#090d16" stroke="#00a8ff" stroke-width="4" />
+                                    <circle cx="450" cy="150" r="35" fill="#090d16" stroke="#00a8ff" stroke-width="4" />
+                                    <circle cx="150" cy="150" r="15" fill="#00e5ff" />
+                                    <circle cx="450" cy="150" r="15" fill="#00e5ff" />
+                                    <!-- Rims Spokes -->
+                                    <line x1="150" y1="115" x2="150" y2="185" stroke="#38bdf8" stroke-width="2" />
+                                    <line x1="115" y1="150" x2="185" y2="150" stroke="#38bdf8" stroke-width="2" />
+                                    <line x1="450" y1="115" x2="450" y2="185" stroke="#38bdf8" stroke-width="2" />
+                                    <line x1="415" y1="150" x2="485" y2="150" stroke="#38bdf8" stroke-width="2" />
+                                    <!-- Windshield with cyan tint -->
+                                    <path d="M 230 76 L 310 76 L 350 105 L 210 105 Z" fill="#082f49" opacity="0.9" stroke="#00e5ff" stroke-width="1.5" />
+                                    <!-- Glowing Headlights and laser scans -->
+                                    <path d="M 540 112 L 565 118" stroke="#00e5ff" stroke-width="3" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Water droplets rolling off animated indicator -->
+                    <div class="absolute right-6 top-1/4 flex flex-col gap-2 pointer-events-none select-none text-right opacity-90">
+                        <span class="text-[10px] text-veloxCyan font-mono" data-i18n="simHydroEffect">💧 Effet Lotus - Contact 120°</span>
+                        <span class="text-[10px] text-veloxCyan font-mono" data-i18n="simMirrorShine">✨ Brillance Miroir Profonde</span>
+                    </div>
+
+                    <!-- Dynamic Sliding Bar Separator UI -->
+                    <div id="slider-bar" class="absolute top-0 bottom-0 w-1 bg-gradient-to-b from-veloxBlue via-veloxCyan to-veloxBlue shadow-neonCyan pointer-events-none z-20" style="right: 50%;">
+                        <div class="absolute top-1/2 -translate-y-1/2 -left-3.5 w-8 h-8 rounded-full bg-black border-2 border-veloxCyan flex items-center justify-center text-veloxCyan font-bold text-xs shadow-md select-none">↔</div>
+                    </div>
+                </div>
+
+                <!-- Range Input Controller -->
+                <div class="mt-6">
+                    <input type="range" id="sim-range" min="0" max="100" value="50" class="w-full accent-veloxCyan bg-veloxBorder h-2 rounded-lg appearance-none cursor-pointer">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SMART PRODUCT DIAGNOSTIC TOOL -->
+    <section id="diagnostic-section" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-veloxBorder">
+        <div class="text-center mb-12">
+            <span class="text-xs text-veloxCyan font-mono uppercase tracking-widest font-bold" data-i18n="diagBadge">ALGORITHMIC RECOMENDATION</span>
+            <h2 class="text-3xl font-montserrat font-black text-white tracking-wide uppercase mt-2" data-i18n="diagTitle">TROUVEZ VOTRE PROTECTION IDÉALE</h2>
+            <p class="text-[#a0b4c8] mt-2 max-w-xl mx-auto text-sm" data-i18n="diagSubtitle">Répondez à 3 questions rapides pour que notre algorithme vous propose le traitement adapté.</p>
+        </div>
+
+        <div class="max-w-3xl mx-auto bg-veloxCard border border-veloxBorder p-8 rounded-3xl relative overflow-hidden">
+            <!-- Background Glow -->
+            <div class="absolute -right-32 -bottom-32 w-64 h-64 bg-veloxCyan/10 rounded-full filter blur-3xl"></div>
+
+            <!-- Quiz Steps Container -->
+            <div id="quiz-wrapper" class="relative z-10 min-h-[300px] flex flex-col justify-between">
+                
+                <!-- Progress bar -->
+                <div class="w-full bg-veloxBorder h-1.5 rounded-full mb-8">
+                    <div id="quiz-progress" class="bg-gradient-to-r from-veloxBlue to-veloxCyan h-1.5 rounded-full transition-all duration-300" style="width: 33%"></div>
+                </div>
+
+                <!-- STEP 1 -->
+                <div id="quiz-step-1" class="quiz-step">
+                    <h3 class="text-lg font-montserrat font-bold text-white mb-6 uppercase flex items-center gap-3">
+                        <span class="bg-veloxCyan/10 text-veloxCyan rounded-lg px-2 py-0.5 font-mono">01</span>
+                        <span data-i18n="quizQ1">Quel est le type de votre véhicule ?</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <button onclick="selectQuizOption(1, 'daily')" class="p-5 rounded-2xl bg-slate-950/50 border border-veloxBorder hover:border-veloxCyan hover:bg-veloxCyan/5 text-left transition-all duration-300 flex flex-col gap-3 group">
+                            <span class="text-xl">🚗</span>
+                            <span class="font-bold text-sm text-white group-hover:text-veloxCyan" data-i18n="quizO1A">Voiture Quotidienne</span>
+                            <span class="text-xs text-[#a0b4c8]" data-i18n="quizO1ADesc">Utilisation de tous les jours, lavages réguliers.</span>
+                        </button>
+                        <button onclick="selectQuizOption(1, 'sports')" class="p-5 rounded-2xl bg-slate-950/50 border border-veloxBorder hover:border-veloxCyan hover:bg-veloxCyan/5 text-left transition-all duration-300 flex flex-col gap-3 group">
+                            <span class="text-xl">🏎️</span>
+                            <span class="font-bold text-sm text-white group-hover:text-veloxCyan" data-i18n="quizO1B">Sportive & Prestige</span>
+                            <span class="text-xs text-[#a0b4c8]" data-i18n="quizO1BDesc">Supercars, voitures de luxe ou de collection.</span>
+                        </button>
+                        <button onclick="selectQuizOption(1, 'suv')" class="p-5 rounded-2xl bg-slate-950/50 border border-veloxBorder hover:border-veloxCyan hover:bg-veloxCyan/5 text-left transition-all duration-300 flex flex-col gap-3 group">
+                            <span class="text-xl">⛰️</span>
+                            <span class="font-bold text-sm text-white group-hover:text-veloxCyan" data-i18n="quizO1C">SUV & Tout-Terrain</span>
+                            <span class="text-xs text-[#a0b4c8]" data-i18n="quizO1CDesc">Conditions dures, boue, routes montagneuses.</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2 (Hidden by default) -->
+                <div id="quiz-step-2" class="quiz-step hidden">
+                    <h3 class="text-lg font-montserrat font-bold text-white mb-6 uppercase flex items-center gap-3">
+                        <span class="bg-veloxCyan/10 text-veloxCyan rounded-lg px-2 py-0.5 font-mono">02</span>
+                        <span data-i18n="quizQ2">Quel climat subit principalement votre voiture ?</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <button onclick="selectQuizOption(2, 'sunny')" class="p-5 rounded-2xl bg-slate-950/50 border border-veloxBorder hover:border-veloxCyan hover:bg-veloxCyan/5 text-left transition-all duration-300 flex flex-col gap-3 group">
+                            <span class="text-xl">☀️</span>
+                            <span class="font-bold text-sm text-white group-hover:text-veloxCyan" data-i18n="quizO2A">Chaud & Ensoleillé</span>
+                            <span class="text-xs text-[#a0b4c8]" data-i18n="quizO2ADesc">Forte exposition aux rayons UV & chaleur.</span>
+                        </button>
+                        <button onclick="selectQuizOption(2, 'rainy')" class="p-5 rounded-2xl bg-slate-950/50 border border-veloxBorder hover:border-veloxCyan hover:bg-veloxCyan/5 text-left transition-all duration-300 flex flex-col gap-3 group">
+                            <span class="text-xl">🌧️</span>
+                            <span class="font-bold text-sm text-white group-hover:text-veloxCyan" data-i18n="quizO2B">Pluvieux & Humide</span>
+                            <span class="text-xs text-[#a0b4c8]" data-i18n="quizO2BDesc">Fréquence élevée de pluie, boue, sel d'hiver.</span>
+                        </button>
+                        <button onclick="selectQuizOption(2, 'mixed')" class="p-5 rounded-2xl bg-slate-950/50 border border-veloxBorder hover:border-veloxCyan hover:bg-veloxCyan/5 text-left transition-all duration-300 flex flex-col gap-3 group">
+                            <span class="text-xl">🏙️</span>
+                            <span class="font-bold text-sm text-white group-hover:text-veloxCyan" data-i18n="quizO2C">Mixte & Urbain</span>
+                            <span class="text-xs text-[#a0b4c8]" data-i18n="quizO2CDesc">Climat modéré, pollution urbaine, sève d'arbre.</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3 (Hidden by default) -->
+                <div id="quiz-step-3" class="quiz-step hidden">
+                    <h3 class="text-lg font-montserrat font-bold text-white mb-6 uppercase flex items-center gap-3">
+                        <span class="bg-veloxCyan/10 text-veloxCyan rounded-lg px-2 py-0.5 font-mono">03</span>
+                        <span data-i18n="quizQ3">Quel est votre objectif principal ?</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <button onclick="selectQuizOption(3, 'shine')" class="p-5 rounded-2xl bg-slate-950/50 border border-veloxBorder hover:border-veloxCyan hover:bg-veloxCyan/5 text-left transition-all duration-300 flex flex-col gap-3 group">
+                            <span class="text-xl">✨</span>
+                            <span class="font-bold text-sm text-white group-hover:text-veloxCyan" data-i18n="quizO3A">Brillance Miroir</span>
+                            <span class="text-xs text-[#a0b4c8]" data-i18n="quizO3ADesc">Finition gloss maximale et éclat spectaculaire.</span>
+                        </button>
+                        <button onclick="selectQuizOption(3, 'durability')" class="p-5 rounded-2xl bg-slate-950/50 border border-veloxBorder hover:border-veloxCyan hover:bg-veloxCyan/5 text-left transition-all duration-300 flex flex-col gap-3 group">
+                            <span class="text-xl">🛡️</span>
+                            <span class="font-bold text-sm text-white group-hover:text-veloxCyan" data-i18n="quizO3B">Longue Durabilité</span>
+                            <span class="text-xs text-[#a0b4c8]" data-i18n="quizO3BDesc">Une protection robuste et durable (5+ ans).</span>
+                        </button>
+                        <button onclick="selectQuizOption(3, 'absolute')" class="p-5 rounded-2xl bg-slate-950/50 border border-veloxBorder hover:border-veloxCyan hover:bg-veloxCyan/5 text-left transition-all duration-300 flex flex-col gap-3 group">
+                            <span class="text-xl">💎</span>
+                            <span class="font-bold text-sm text-white group-hover:text-veloxCyan" data-i18n="quizO3C">Protection Absolue</span>
+                            <span class="text-xs text-[#a0b4c8]" data-i18n="quizO3CDesc">Une dureté inégalée de 12H et résistance ultime.</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RESULT PANEL (Hidden by default) -->
+                <div id="quiz-result" class="quiz-step hidden text-center py-6">
+                    <span class="text-4xl">🎯</span>
+                    <h4 class="text-xl font-montserrat font-black text-veloxCyan uppercase mt-3" data-i18n="quizResultTitle">RECOMMANDATION DE L'ALGORITHME</h4>
+                    
+                    <!-- Dynamic Recommended Product Display Card -->
+                    <div id="recommended-card" class="mt-6 max-w-md mx-auto bg-[#0a111b] border border-veloxCyan/50 rounded-2xl p-6 shadow-neonCyan flex flex-col items-center">
+                        <div class="h-16 w-16 bg-veloxCyan/10 rounded-full flex items-center justify-center text-veloxCyan text-2xl font-black" id="rec-icon">V</div>
+                        <h5 class="text-lg font-montserrat font-bold text-white mt-4" id="rec-title">PRODUCT NAME</h5>
+                        <p class="text-xs text-[#a0b4c8] mt-2 text-center" id="rec-description">Product detailed short description.</p>
+                        
+                        <div class="mt-4 flex gap-4 text-xs font-mono">
+                            <span class="px-2 py-1 bg-veloxBorder rounded" id="rec-stat-hardness">Dureté: 10H</span>
+                            <span class="px-2 py-1 bg-veloxBorder rounded" id="rec-stat-durability">Durabilité: 3-5 ans</span>
+                        </div>
+
+                        <button onclick="addRecommendedToCart()" class="mt-6 w-full py-3 bg-gradient-to-r from-veloxBlue to-veloxCyan text-black font-montserrat font-bold rounded-xl shadow-md hover:opacity-95 transition-opacity" data-i18n="quizAddToCart">
+                            AJOUTER AU PANIER
+                        </button>
+                    </div>
+
+                    <button onclick="resetQuiz()" class="mt-6 text-xs text-[#a0b4c8] hover:text-veloxCyan transition-colors font-semibold uppercase tracking-wider" data-i18n="quizResetBtn">Recommencer le test</button>
+                </div>
+
+                <!-- Bottom Back / Nav Button -->
+                <div class="mt-8 flex justify-between">
+                    <button id="quiz-back-btn" onclick="quizBack()" class="px-5 py-2 rounded-xl border border-veloxBorder text-xs font-bold text-[#a0b4c8] hover:border-veloxCyan hover:text-veloxCyan transition-all opacity-0 pointer-events-none uppercase" data-i18n="quizBackBtn">
+                        Retour
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCT SHOWCASE SECTION -->
+    <section id="products-section" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-veloxBorder">
+        <div class="text-center mb-16">
+            <span class="text-xs text-veloxCyan font-mono uppercase tracking-widest font-bold" data-i18n="productsBadge">THE BARRIER LINEUP</span>
+            <h2 class="text-3xl sm:text-4xl font-montserrat font-black text-white tracking-wide uppercase mt-2" data-i18n="productsTitle">NOS SOLUTIONS DE PROTECTION</h2>
+            <p class="text-[#a0b4c8] mt-3 max-w-xl mx-auto text-sm" data-i18n="productsSubtitle">Des formules haute performance brevetées adaptées à chaque besoin de protection.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- PRODUCT 1: Graphene Ceramic Coating -->
+            <div class="bg-veloxCard border border-veloxBorder rounded-3xl p-6 flex flex-col justify-between hover:border-veloxBlue/50 hover:shadow-neonBlue transition-all duration-300 group">
+                <div>
+                    <!-- Product Header -->
+                    <div class="flex justify-between items-start">
+                        <span class="px-3 py-1 bg-veloxBlue/10 text-veloxBlue rounded-full text-[10px] font-black font-mono">10H HARDNESS</span>
+                        <div class="flex text-amber-400 text-xs">★★★★★</div>
+                    </div>
+                    <!-- Visual Asset Placeholder (Aesthetic Glassmorphic box) -->
+                    <div class="h-56 bg-slate-950/80 rounded-2xl my-6 flex items-center justify-center border border-veloxBorder relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-veloxBlue/10 to-transparent"></div>
+                        <img src="src/assets/images/velox_graphene.jpg" alt="Graphene Ceramic Coating" id="img-prod1" class="h-44 w-auto object-contain transform group-hover:scale-105 transition-transform duration-500 rounded" referrerPolicy="no-referrer" onerror="handleImageError(this, 'prod1-fallback')" />
+                        
+                        <!-- Camera Upload Hover overlay -->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                            <label for="upload-prod1" class="px-4 py-2 bg-veloxBlue hover:bg-white text-black font-montserrat font-bold text-[11px] rounded-xl cursor-pointer uppercase tracking-wider flex items-center gap-1.5 transition-all">
+                                <span class="text-xs">📷</span>
+                                <span data-i18n="btnChangeImg">Modifier l'image</span>
+                            </label>
+                            <input type="file" id="upload-prod1" accept="image/*" class="hidden" onchange="previewSelectedImage(this, 'img-prod1', 'prod1-fallback', 'prod1-stored-img')" />
+                        </div>
+
+                        <!-- Beautiful Fallback (shown only if image fails to load) -->
+                        <div id="prod1-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center">
+                            <div class="flex flex-col items-center justify-center relative">
+                                <div class="h-32 w-16 bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 rounded-lg shadow-xl relative flex flex-col justify-between p-2 overflow-hidden">
+                                    <div class="absolute inset-0 bg-gradient-to-tr from-veloxBlue/15 to-transparent"></div>
+                                    <div class="text-[6px] font-mono text-veloxBlue text-center">VELOX</div>
+                                    <div class="h-10 w-10 border border-veloxBlue/30 rounded-full mx-auto flex items-center justify-center text-veloxBlue text-[10px] font-black">10H</div>
+                                    <div class="text-[5px] font-mono text-[#a0b4c8] text-center">Graphene</div>
+                                </div>
+                                <div class="absolute -bottom-2 w-20 h-4 bg-slate-950/90 rounded-full filter blur-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Details -->
+                    <h3 class="text-xl font-montserrat font-black text-white tracking-wide uppercase">GRAPHENE CERAMIC COATING</h3>
+                    <p class="text-xs text-veloxBlue font-bold mt-1" data-i18n="prod1Sub">La barrière céramique haute-fidélité</p>
+                    <ul class="mt-4 text-xs text-[#a0b4c8] space-y-2">
+                        <li class="flex items-center gap-2"><span class="text-veloxBlue">✔</span> <span data-i18n="prod1F1">Protection de dureté 18H</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxBlue">✔</span> <span data-i18n="prod1F2">Perlage d'eau hydrophobe</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxBlue">✔</span> <span data-i18n="prod1F3">Résistance UV et oxydation</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxBlue">✔</span> <span data-i18n="prod1F4">Résistance chimique et acide</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxBlue">✔</span> <span data-i18n="prod1F5">Finition miroir haute brillance</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxBlue">✔</span> <span data-i18n="prod1F6">Protection anti-rayures</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxBlue">✔</span> <span data-i18n="prod1F7">Durabilité : 3 à 5 ans (30 ML)</span></li>
+                    </ul>
+                    <!-- Technical Specs Grid -->
+                    <div class="mt-5 grid grid-cols-2 gap-2 text-[11px] font-mono border-t border-veloxBorder pt-4">
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specHardness">Dureté</span><span class="text-white font-bold">10H</span></div>
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specDurability">Durabilité</span><span class="text-white font-bold">3-5 Ans</span></div>
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specCapacity">Capacité</span><span class="text-white font-bold">30 ml</span></div>
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specAngle">Angle de contact</span><span class="text-white font-bold">120°</span></div>
+                    </div>
+                </div>
+                <!-- Price and CTA -->
+                <div class="mt-6 pt-4 border-t border-veloxBorder flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-[#a0b4c8] uppercase block" data-i18n="prodPriceLabel">Tarif unique</span>
+                        <span class="text-2xl font-montserrat font-black text-white">$79.99</span>
+                    </div>
+                    <button onclick="addToCart('prod1', 'Graphene Ceramic Coating', 79.99, 'prod1')" class="px-5 py-3 bg-veloxBlue hover:bg-white text-black font-montserrat font-black rounded-xl text-xs uppercase tracking-wider transition-all duration-300" data-i18n="btnOrder">Commander</button>
+                </div>
+            </div>
+
+            <!-- PRODUCT 2: Graphene Ultra 10H -->
+            <div class="bg-veloxCard border border-veloxBorder rounded-3xl p-6 flex flex-col justify-between hover:border-veloxCyan/50 hover:shadow-neonCyan transition-all duration-300 group">
+                <div>
+                    <!-- Product Header -->
+                    <div class="flex justify-between items-start">
+                        <span class="px-3 py-1 bg-veloxCyan/10 text-veloxCyan rounded-full text-[10px] font-black font-mono">10H PRO ULTRA</span>
+                        <div class="flex text-amber-400 text-xs">★★★★★</div>
+                    </div>
+                    <!-- Visual Asset Placeholder -->
+                    <div class="h-56 bg-slate-950/80 rounded-2xl my-6 flex items-center justify-center border border-veloxBorder relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-veloxCyan/10 to-transparent"></div>
+                        <!-- Real image -->
+                        <img src="src/assets/images/graphene_ultra_10h.jpg" alt="Graphene Ultra 10H" id="img-prod2" class="h-44 w-auto object-contain transform group-hover:scale-105 transition-transform duration-500 rounded" referrerPolicy="no-referrer" onerror="handleImageError(this, 'prod2-fallback')" />
+                        
+                        <!-- Camera Upload Hover overlay -->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                            <label for="upload-prod2" class="px-4 py-2 bg-veloxCyan hover:bg-white text-black font-montserrat font-bold text-[11px] rounded-xl cursor-pointer uppercase tracking-wider flex items-center gap-1.5 transition-all">
+                                <span class="text-xs">📷</span>
+                                <span data-i18n="btnChangeImg">Modifier l'image</span>
+                            </label>
+                            <input type="file" id="upload-prod2" accept="image/*" class="hidden" onchange="previewSelectedImage(this, 'img-prod2', 'prod2-fallback', 'prod2-stored-img')" />
+                        </div>
+
+                        <!-- Beautiful CSS Fallback -->
+                        <div id="prod2-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center">
+                            <div class="flex flex-col items-center justify-center relative">
+                                <div class="h-32 w-16 bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 rounded-lg shadow-xl relative flex flex-col justify-between p-2 overflow-hidden">
+                                    <div class="absolute inset-0 bg-gradient-to-tr from-veloxCyan/15 to-transparent"></div>
+                                    <div class="text-[6px] font-mono text-veloxCyan text-center">VELOX</div>
+                                    <div class="h-10 w-10 border border-veloxCyan/30 rounded-full mx-auto flex items-center justify-center text-veloxCyan text-[10px] font-black">10H</div>
+                                    <div class="text-[5px] font-mono text-[#a0b4c8] text-center">Graphene Ultra</div>
+                                </div>
+                                <div class="absolute -bottom-2 w-20 h-4 bg-slate-950/90 rounded-full filter blur-sm"></div>
+                            </div>
+                            <span class="text-[8px] text-[#a0b4c8]/50 font-mono mt-1.5 uppercase tracking-wider text-center px-2">Format: graphene_ultra_10h.jpg</span>
+                        </div>
+                    </div>
+                    <!-- Product Details -->
+                    <h3 class="text-xl font-montserrat font-black text-white tracking-wide uppercase">GRAPHENE ULTRA 10H</h3>
+                    <p class="text-xs text-veloxCyan font-bold mt-1" data-i18n="prod2Sub">Résistance extrême tous climats</p>
+                    <ul class="mt-4 text-xs text-[#a0b4c8] space-y-2">
+                        <li class="flex items-center gap-2"><span class="text-veloxCyan">✔</span> <span data-i18n="prod2F1">Protection de dureté 18H</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxCyan">✔</span> <span data-i18n="prod2F2">Perlage d'eau hydrophobe</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxCyan">✔</span> <span data-i18n="prod2F3">Résistance UV et oxydation</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxCyan">✔</span> <span data-i18n="prod2F4">Résistance chimique et acide</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxCyan">✔</span> <span data-i18n="prod2F5">Finition miroir haute brillance</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxCyan">✔</span> <span data-i18n="prod2F6">Protection anti-rayures</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxCyan">✔</span> <span data-i18n="prod2F7">Durabilité : 5 ans et + (50 ML)</span></li>
+                    </ul>
+                    <!-- Technical Specs Grid -->
+                    <div class="mt-5 grid grid-cols-2 gap-2 text-[11px] font-mono border-t border-veloxBorder pt-4">
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specHardness">Dureté</span><span class="text-white font-bold">10H+</span></div>
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specDurability">Durabilité</span><span class="text-white font-bold">5+ Ans</span></div>
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specCapacity">Capacité</span><span class="text-white font-bold">50 ml</span></div>
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specAngle">Angle de contact</span><span class="text-white font-bold">125°</span></div>
+                    </div>
+                </div>
+                <!-- Price and CTA -->
+                <div class="mt-6 pt-4 border-t border-veloxBorder flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-[#a0b4c8] uppercase block" data-i18n="prodPriceLabel">Tarif unique</span>
+                        <span class="text-2xl font-montserrat font-black text-white">$119.99</span>
+                    </div>
+                    <button onclick="addToCart('prod2', 'Graphene Ultra 10H', 119.99, 'prod2')" class="px-5 py-3 bg-veloxCyan hover:bg-white text-black font-montserrat font-black rounded-xl text-xs uppercase tracking-wider transition-all duration-300" data-i18n="btnOrder">Commander</button>
+                </div>
+            </div>
+
+            <!-- PRODUCT 3: Diamond Shield 12H -->
+            <div class="bg-veloxCard border border-veloxBorder rounded-3xl p-6 flex flex-col justify-between hover:border-veloxGold/50 hover:shadow-lg hover:shadow-veloxGold/10 transition-all duration-300 group">
+                <div>
+                    <!-- Product Header -->
+                    <div class="flex justify-between items-start">
+                        <span class="px-3 py-1 bg-veloxGold/10 text-veloxGold rounded-full text-[10px] font-black font-mono">12H KEVLAR BARRIER</span>
+                        <div class="flex text-amber-400 text-xs">★★★★★</div>
+                    </div>
+                    <!-- Visual Asset Placeholder -->
+                    <div class="h-56 bg-slate-950/80 rounded-2xl my-6 flex items-center justify-center border border-veloxBorder relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-veloxGold/10 to-transparent"></div>
+                        <!-- Real image -->
+                        <img src="src/assets/images/diamond_shield_12h.jpg" alt="Diamond Shield 12H" id="img-prod3" class="h-44 w-auto object-contain transform group-hover:scale-105 transition-transform duration-500 rounded" referrerPolicy="no-referrer" onerror="handleImageError(this, 'prod3-fallback')" />
+                        
+                        <!-- Camera Upload Hover overlay -->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                            <label for="upload-prod3" class="px-4 py-2 bg-veloxGold hover:bg-white text-black font-montserrat font-bold text-[11px] rounded-xl cursor-pointer uppercase tracking-wider flex items-center gap-1.5 transition-all">
+                                <span class="text-xs">📷</span>
+                                <span data-i18n="btnChangeImg">Modifier l'image</span>
+                            </label>
+                            <input type="file" id="upload-prod3" accept="image/*" class="hidden" onchange="previewSelectedImage(this, 'img-prod3', 'prod3-fallback', 'prod3-stored-img')" />
+                        </div>
+
+                        <!-- Beautiful CSS Fallback -->
+                        <div id="prod3-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center">
+                            <div class="flex flex-col items-center justify-center relative">
+                                <div class="h-32 w-16 bg-gradient-to-b from-[#111] to-[#1a1505] border-2 border-veloxGold/60 rounded-lg shadow-xl relative flex flex-col justify-between p-2 overflow-hidden">
+                                    <div class="absolute inset-0 bg-gradient-to-tr from-veloxGold/15 to-transparent"></div>
+                                    <div class="text-[6px] font-mono text-veloxGold text-center">VELOX ELITE</div>
+                                    <div class="h-10 w-10 border border-veloxGold/30 rounded-full mx-auto flex items-center justify-center text-veloxGold text-[10px] font-black">12H</div>
+                                    <div class="text-[5px] font-mono text-[#a0b4c8] text-center">Diamond Shield</div>
+                                </div>
+                                <div class="absolute -bottom-2 w-20 h-4 bg-slate-950/90 rounded-full filter blur-sm"></div>
+                            </div>
+                            <span class="text-[8px] text-[#a0b4c8]/50 font-mono mt-1.5 uppercase tracking-wider text-center px-2">Format: diamond_shield_12h.jpg</span>
+                        </div>
+                    </div>
+                    <!-- Product Details -->
+                    <h3 class="text-xl font-montserrat font-black text-white tracking-wide uppercase">DIAMOND SHIELD 12H</h3>
+                    <p class="text-xs text-veloxGold font-bold mt-1" data-i18n="prod3Sub">La référence absolue pour peintures et vinyles</p>
+                    <ul class="mt-4 text-xs text-[#a0b4c8] space-y-2">
+                        <li class="flex items-center gap-2"><span class="text-veloxGold">✔</span> <span data-i18n="prod3F1">Protection de dureté 18H / 12H</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxGold">✔</span> <span data-i18n="prod3F2">Perlage d'eau hydrophobe</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxGold">✔</span> <span data-i18n="prod3F3">Résistance UV et oxydation</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxGold">✔</span> <span data-i18n="prod3F4">Résistance chimique et acide</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxGold">✔</span> <span data-i18n="prod3F5">Finition miroir haute brillance</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxGold">✔</span> <span data-i18n="prod3F6">Protection anti-rayures</span></li>
+                        <li class="flex items-center gap-2"><span class="text-veloxGold">✔</span> <span data-i18n="prod3F7">Durabilité : 7 ans et + (50 ML)</span></li>
+                    </ul>
+                    <!-- Technical Specs Grid -->
+                    <div class="mt-5 grid grid-cols-2 gap-2 text-[11px] font-mono border-t border-veloxBorder pt-4">
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specHardness">Dureté</span><span class="text-white font-bold">12H</span></div>
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specDurability">Durabilité</span><span class="text-white font-bold">5-7 Ans</span></div>
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specCapacity">Capacité</span><span class="text-white font-bold">50 ml</span></div>
+                        <div class="flex justify-between"><span class="text-[#a0b4c8]" data-i18n="specAngle">Angle de contact</span><span class="text-white font-bold">137°</span></div>
+                    </div>
+                </div>
+                <!-- Price and CTA -->
+                <div class="mt-6 pt-4 border-t border-veloxBorder flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-[#a0b4c8] uppercase block" data-i18n="prodPriceLabel">Tarif unique</span>
+                        <span class="text-2xl font-montserrat font-black text-white">$149.99</span>
+                    </div>
+                    <button onclick="addToCart('prod3', 'Diamond Shield 12H', 149.99, 'prod3')" class="px-5 py-3 bg-veloxGold hover:bg-white text-black font-montserrat font-black rounded-xl text-xs uppercase tracking-wider transition-all duration-300" data-i18n="btnOrder">Commander</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- COMPARISON MATRIX -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-veloxBorder">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-montserrat font-black text-white tracking-wide uppercase" data-i18n="compTitle">MATRICE COMPARATIVE</h2>
+            <p class="text-[#a0b4c8] mt-2 max-w-xl mx-auto text-sm" data-i18n="compSubtitle">Comparez nos formules nano-céramiques pour choisir la barrière parfaite.</p>
+        </div>
+
+        <div class="overflow-x-auto bg-veloxCard/50 border border-veloxBorder rounded-2xl">
+            <table class="w-full border-collapse text-left text-sm">
+                <thead>
+                    <tr class="border-b border-veloxBorder bg-veloxCard">
+                        <th class="p-4 font-montserrat font-bold text-white uppercase" data-i18n="compColFeature">Spécifications</th>
+                        <th class="p-4 font-montserrat font-bold text-veloxBlue uppercase">Graphene Ceramic</th>
+                        <th class="p-4 font-montserrat font-bold text-veloxCyan uppercase">Graphene Ultra 10H</th>
+                        <th class="p-4 font-montserrat font-bold text-veloxGold uppercase">Diamond Shield 12H</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-veloxBorder font-mono text-[#a0b4c8]">
+                    <tr>
+                        <td class="p-4 text-white font-semibold font-sans" data-i18n="compHardness">Dureté de protection</td>
+                        <td class="p-4">10H</td>
+                        <td class="p-4 text-veloxCyan">10H+ Professional</td>
+                        <td class="p-4 text-veloxGold font-black">12H Ultimate</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 text-white font-semibold font-sans" data-i18n="compDurability">Durabilité certifiée</td>
+                        <td class="p-4">3 - 5 Ans</td>
+                        <td class="p-4">5+ Ans</td>
+                        <td class="p-4 text-white">5 - 7 Ans</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 text-white font-semibold font-sans" data-i18n="compAngle">Angle hydrophobe</td>
+                        <td class="p-4">120°</td>
+                        <td class="p-4">125°</td>
+                        <td class="p-4 text-veloxGold font-bold">137°</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 text-white font-semibold font-sans" data-i18n="compResist">Résistance aux produits chimiques</td>
+                        <td class="p-4">Excellente (pH 2-12)</td>
+                        <td class="p-4">Extrême (pH 1-13)</td>
+                        <td class="p-4 text-white">Indestructible (pH 1-14)</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 text-white font-semibold font-sans" data-i18n="compEase">Difficulté d'application</td>
+                        <td class="p-4" data-i18n="compEaseEasy">Facile (Grand Public)</td>
+                        <td class="p-4" data-i18n="compEaseMedium">Intermédiaire</td>
+                        <td class="p-4" data-i18n="compEaseHard">Professionnel requis</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- CUSTOMER REVIEWS & FEEDBACK SECTION -->
+    <section id="reviews-section" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-veloxBorder">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-montserrat font-black text-white tracking-wide uppercase" data-i18n="revTitle">AVIS DE NOS CLIENTS</h2>
+            <p class="text-[#a0b4c8] mt-2 max-w-xl mx-auto text-sm" data-i18n="revSubtitle">Découvrez l'avis de professionnels et passionnés d'automobile.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Overall Stats Bar -->
+            <div class="bg-veloxCard border border-veloxBorder p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <h3 class="font-montserrat font-bold text-lg text-white" data-i18n="revStatTitle">Score global</h3>
+                    <div class="flex items-center gap-4 mt-4">
+                        <span class="text-5xl font-montserrat font-black text-veloxCyan" id="avg-rating-value">4.9</span>
+                        <div>
+                            <div class="flex text-amber-400 text-sm">★★★★★</div>
+                            <span class="text-xs text-[#a0b4c8]" id="total-reviews-label">Sur la base de 124 avis</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Star breakdown -->
+                <div class="space-y-2 mt-6">
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="w-12 text-[#a0b4c8]">5 stars</span>
+                        <div class="flex-1 bg-veloxBorder h-2 rounded-full overflow-hidden">
+                            <div class="bg-amber-400 h-2 rounded-full" style="width: 90%"></div>
+                        </div>
+                        <span class="w-8 text-[#a0b4c8] text-right">90%</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="w-12 text-[#a0b4c8]">4 stars</span>
+                        <div class="flex-1 bg-veloxBorder h-2 rounded-full overflow-hidden">
+                            <div class="bg-amber-400 h-2 rounded-full" style="width: 8%"></div>
+                        </div>
+                        <span class="w-8 text-[#a0b4c8] text-right">8%</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="w-12 text-[#a0b4c8]">3 stars</span>
+                        <div class="flex-1 bg-veloxBorder h-2 rounded-full overflow-hidden">
+                            <div class="bg-amber-400 h-2 rounded-full" style="width: 2%"></div>
+                        </div>
+                        <span class="w-8 text-[#a0b4c8] text-right">2%</span>
+                    </div>
+                </div>
+
+                <!-- Add Review trigger -->
+                <button onclick="toggleReviewForm()" class="mt-8 w-full py-3 bg-veloxBorder border border-[#334155] hover:border-veloxCyan hover:text-veloxCyan text-white font-montserrat font-semibold rounded-xl text-xs uppercase tracking-wider transition-colors" data-i18n="revBtnAdd">
+                    LAISSER UN AVIS
+                </button>
+            </div>
+
+            <!-- List of Reviews -->
+            <div class="lg:col-span-2 space-y-4 max-h-[400px] overflow-y-auto pr-2" id="reviews-list">
+                <!-- Built-in reviews populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Write Review Collapsible Panel -->
+        <div id="review-form-panel" class="hidden max-w-2xl mx-auto mt-8 bg-veloxCard border border-veloxBorder p-6 rounded-2xl relative transition-all duration-300">
+            <h3 class="font-montserrat font-bold text-white uppercase text-sm mb-4" data-i18n="formTitle">Rédiger votre commentaire</h3>
+            <form id="new-review-form" onsubmit="handleReviewSubmit(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-mono uppercase text-[#a0b4c8] mb-1.5" data-i18n="formName">Nom complet</label>
+                        <input type="text" id="form-input-name" required class="w-full bg-slate-950 border border-veloxBorder text-white text-xs rounded-xl p-3 focus:outline-none focus:border-veloxCyan">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono uppercase text-[#a0b4c8] mb-1.5" data-i18n="formProduct">Produit acheté</label>
+                        <select id="form-input-product" class="w-full bg-slate-950 border border-veloxBorder text-[#a0b4c8] text-xs rounded-xl p-3 focus:outline-none focus:border-veloxCyan font-bold">
+                            <option value="Graphene Ceramic Coating">Graphene Ceramic Coating</option>
+                            <option value="Graphene Ultra 10H">Graphene Ultra 10H</option>
+                            <option value="Diamond Shield 12H">Diamond Shield 12H</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-mono uppercase text-[#a0b4c8] mb-1.5" data-i18n="formRating">Note globale</label>
+                    <div class="flex gap-2 text-xl" id="star-rating-selector">
+                        <button type="button" onclick="setFormRating(1)" class="star-btn text-amber-400">★</button>
+                        <button type="button" onclick="setFormRating(2)" class="star-btn text-amber-400">★</button>
+                        <button type="button" onclick="setFormRating(3)" class="star-btn text-amber-400">★</button>
+                        <button type="button" onclick="setFormRating(4)" class="star-btn text-amber-400">★</button>
+                        <button type="button" onclick="setFormRating(5)" class="star-btn text-amber-400">★</button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-mono uppercase text-[#a0b4c8] mb-1.5" data-i18n="formMessage">Votre commentaire</label>
+                    <textarea id="form-input-comment" required rows="3" class="w-full bg-slate-950 border border-veloxBorder text-white text-xs rounded-xl p-3 focus:outline-none focus:border-veloxCyan"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="toggleReviewForm()" class="px-4 py-2 border border-veloxBorder text-xs text-[#a0b4c8] rounded-xl hover:text-white" data-i18n="formCancel">Annuler</button>
+                    <button type="submit" class="px-5 py-2 bg-gradient-to-r from-veloxBlue to-veloxCyan text-black font-bold text-xs rounded-xl uppercase tracking-wider hover:opacity-95" data-i18n="formSubmit">Soumettre</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- SHOPPING CART SLIDE-OVER PANEL -->
+    <div id="cart-panel" class="fixed top-0 bottom-0 right-0 w-full sm:w-[450px] bg-[#070b12] border-l border-veloxBorder z-50 transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col justify-between overflow-hidden">
+        
+        <!-- Cart Header -->
+        <div class="p-6 border-b border-veloxBorder flex items-center justify-between bg-veloxCard">
+            <div class="flex items-center gap-3">
+                <span class="text-xl">🛒</span>
+                <h3 class="font-montserrat font-black text-white uppercase text-base" data-i18n="cartTitle">Panier d'achat</h3>
+            </div>
+            <button onclick="toggleCart()" class="text-[#a0b4c8] hover:text-white p-2 text-xl">&times;</button>
+        </div>
+
+        <!-- Scrollable list of items -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-4" id="cart-items-list">
+            <!-- Dynamic Cart Items populated here -->
+        </div>
+
+        <!-- Cart Summary, Promo, Checkout -->
+        <div class="p-6 border-t border-veloxBorder bg-veloxCard/90 space-y-4" id="cart-summary-section">
+            
+            <!-- Promo Code Input -->
+            <div class="flex gap-2">
+                <input type="text" id="promo-code-input" placeholder="VELOX20 (-20%)" class="flex-1 bg-slate-950 border border-veloxBorder rounded-xl px-4 py-2.5 text-xs text-white uppercase focus:outline-none focus:border-veloxCyan">
+                <button onclick="applyPromoCode()" class="px-4 py-2.5 bg-veloxBorder hover:bg-[#1e293b] text-white text-xs font-bold rounded-xl uppercase tracking-wider" data-i18n="cartPromoBtn">Appliquer</button>
+            </div>
+            <div id="promo-msg" class="text-[11px] font-mono font-bold text-veloxCyan hidden"></div>
+
+            <!-- Subtotal & Savings -->
+            <div class="space-y-2 text-xs font-mono text-[#a0b4c8] border-t border-veloxBorder/50 pt-4">
+                <div class="flex justify-between">
+                    <span data-i18n="cartSubtotal">Sous-total</span>
+                    <span class="text-white" id="cart-subtotal-val">$0.00</span>
+                </div>
+                <div class="flex justify-between text-veloxCyan hidden" id="cart-discount-row">
+                    <span data-i18n="cartDiscount">Remise coupon</span>
+                    <span id="cart-discount-val">-$0.00</span>
+                </div>
+                <div class="flex justify-between border-t border-veloxBorder/40 pt-2 text-sm font-bold">
+                    <span class="text-white font-sans uppercase" data-i18n="cartTotal">Total à payer</span>
+                    <span class="text-veloxCyan font-montserrat font-black text-base" id="cart-total-val">$0.00</span>
+                </div>
+            </div>
+
+            <!-- Checkout Actions -->
+            <button onclick="showCheckoutForm()" class="w-full py-3.5 bg-gradient-to-r from-veloxBlue to-veloxCyan text-black font-montserrat font-black rounded-xl text-xs uppercase tracking-wider shadow-neonCyan hover:opacity-95 transition-opacity" id="checkout-start-btn" data-i18n="cartCheckoutBtn">
+                Passer au paiement
+            </button>
+        </div>
+
+        <!-- Checkout Form container (Slid up inside the panel when proceeding) -->
+        <div class="absolute inset-x-0 bottom-0 top-[76px] bg-[#070b12] p-6 border-t border-veloxBorder transform translate-y-full transition-transform duration-300 flex flex-col justify-between overflow-y-auto" id="checkout-form-panel">
+            <div class="space-y-4">
+                <div class="flex items-center gap-2 border-b border-veloxBorder pb-2">
+                    <button onclick="hideCheckoutForm()" class="text-veloxCyan text-xs font-bold uppercase hover:underline flex items-center gap-1">
+                        ← <span data-i18n="checkoutBack">Retour au panier</span>
+                    </button>
+                </div>
+                <h4 class="font-montserrat font-bold text-white text-sm uppercase" data-i18n="checkoutDetails">COORDONNÉES DE LIVRAISON</h4>
+
+                <!-- Delivery Details -->
+                <form id="order-delivery-form" onsubmit="processSimulatedPayment(event)" class="space-y-3.5">
+                    <div>
+                        <label class="block text-[10px] font-mono uppercase text-[#a0b4c8] mb-1" data-i18n="checkoutName">Nom complet</label>
+                        <input type="text" required id="ship-name" class="w-full bg-slate-950 border border-veloxBorder text-white text-xs rounded-xl p-3 focus:outline-none focus:border-veloxCyan">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-mono uppercase text-[#a0b4c8] mb-1" data-i18n="checkoutEmail">Email</label>
+                        <input type="email" required id="ship-email" class="w-full bg-slate-950 border border-veloxBorder text-white text-xs rounded-xl p-3 focus:outline-none focus:border-veloxCyan">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-mono uppercase text-[#a0b4c8] mb-1" data-i18n="checkoutPhone">Numéro de téléphone</label>
+                        <input type="tel" required id="ship-phone" class="w-full bg-slate-950 border border-veloxBorder text-white text-xs rounded-xl p-3 focus:outline-none focus:border-veloxCyan">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-mono uppercase text-[#a0b4c8] mb-1" data-i18n="checkoutAddress">Adresse de livraison</label>
+                        <textarea required id="ship-address" rows="2" class="w-full bg-slate-950 border border-veloxBorder text-white text-xs rounded-xl p-3 focus:outline-none focus:border-veloxCyan"></textarea>
+                    </div>
+
+                    <!-- Payment method simulator message -->
+                    <div class="bg-veloxCard p-4 rounded-xl border border-veloxBorder/50 space-y-1">
+                        <span class="text-[10px] text-[#a0b4c8] uppercase tracking-wider block font-mono" data-i18n="checkoutPayMethod">Mode de paiement</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs">💳</span>
+                            <span class="text-xs font-bold text-white" data-i18n="checkoutPaySimulator">Simulation de paiement sécurisé</span>
+                        </div>
+                    </div>
+
+                    <!-- Submit trigger -->
+                    <button type="submit" class="w-full mt-4 py-3.5 bg-gradient-to-r from-veloxBlue to-veloxCyan text-black font-montserrat font-bold text-xs uppercase tracking-wider rounded-xl shadow-neonCyan hover:opacity-95">
+                        <span data-i18n="checkoutPayBtn">Confirmer la commande</span> (<span id="pay-button-total">$0.00</span>)
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Payment Scanning overlay (inside checkout) -->
+        <div id="payment-scanning-screen" class="absolute inset-0 bg-[#070b12]/95 z-50 flex-col items-center justify-center p-6 text-center hidden">
+            <!-- Loading scanner -->
+            <div class="w-20 h-20 rounded-full border-4 border-veloxCyan/10 border-t-veloxCyan animate-spin flex items-center justify-center">
+                <span class="text-2xl">🔒</span>
+            </div>
+            <h4 class="font-montserrat font-black text-veloxCyan mt-6 uppercase text-sm tracking-widest" id="scanning-title">Cryptographie sécurisée...</h4>
+            <p class="text-xs text-[#a0b4c8] mt-2 font-mono max-w-xs mx-auto" id="scanning-subtitle">Génération du reçu de protection moléculaire...</p>
+        </div>
+
+        <!-- Success receipt modal (inside cart panel) -->
+        <div id="success-receipt-screen" class="absolute inset-0 bg-[#070b12] z-50 overflow-y-auto p-6 flex flex-col justify-between hidden">
+            <div class="text-center space-y-4 pt-10">
+                <span class="text-5xl">🏆</span>
+                <h4 class="font-montserrat font-black text-veloxCyan uppercase tracking-wide text-lg" data-i18n="successTitle">COMMANDE CONFIRMÉE !</h4>
+                <p class="text-xs text-[#a0b4c8] max-w-xs mx-auto" data-i18n="successSubtitle">Votre barrière protectrice nanotechnologique Velox est en route.</p>
+
+                <!-- Receipt Detail Cards -->
+                <div class="bg-veloxCard p-4 rounded-xl border border-veloxBorder text-left space-y-2 text-xs font-mono text-[#a0b4c8] mt-6">
+                    <div class="flex justify-between">
+                        <span data-i18n="recId">ID Commande</span>
+                        <span class="text-white font-bold" id="rec-order-id">#VLX-12948-Z</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span data-i18n="recClient">Destinataire</span>
+                        <span class="text-white font-bold" id="rec-order-client">Kram Mohamed</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span data-i18n="recEstDelivery">Livraison estimée</span>
+                        <span class="text-veloxCyan font-bold">3 - 5 Jours ouvrés</span>
+                    </div>
+                    <div class="flex justify-between border-t border-veloxBorder/50 pt-2 font-sans font-bold text-sm text-white">
+                        <span data-i18n="recPaidTotal">Montant payé</span>
+                        <span class="text-veloxCyan" id="rec-order-total">$0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="closeSuccessScreen()" class="w-full py-4 bg-gradient-to-r from-veloxBlue to-veloxCyan text-black font-montserrat font-bold text-xs uppercase tracking-wider rounded-xl mt-8">
+                <span data-i18n="successCloseBtn">Continuer les achats</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Backdrop overlay for shopping cart -->
+    <div id="cart-backdrop" onclick="toggleCart()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity duration-300"></div>
+
+    <!-- APPLICATIONS SECTION -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-veloxBorder">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-montserrat font-black text-white tracking-wide uppercase" data-i18n="appTitle">APPLICATIONS</h2>
+            <p class="text-[#a0b4c8] mt-2 max-w-xl mx-auto text-sm" data-i18n="appSubtitle">Les revêtements VELOX sont compatibles avec tous les types de finitions de carrosseries.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div class="relative h-48 rounded-2xl overflow-hidden group border border-veloxBorder">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&q=80&w=400" alt="Gloss finish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                <span class="absolute bottom-4 left-4 z-20 font-montserrat font-black text-lg text-white tracking-widest uppercase">GLOSS</span>
+            </div>
+            <div class="relative h-48 rounded-2xl overflow-hidden group border border-veloxBorder">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=400" alt="Matte finish" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                <span class="absolute bottom-4 left-4 z-20 font-montserrat font-black text-lg text-white tracking-widest uppercase">MATTE</span>
+            </div>
+            <div class="relative h-48 rounded-2xl overflow-hidden group border border-veloxBorder">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=400" alt="Vinyl wrap" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                <span class="absolute bottom-4 left-4 z-20 font-montserrat font-black text-lg text-white tracking-widest uppercase">VINYL WRAP</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#05090f] py-12 px-4 sm:px-6 lg:px-8 border-t border-veloxBorder">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center">
+                <img src="/src/assets/images/logo.svg" alt="VELOX Logo" class="h-20 w-auto object-contain transition-transform duration-300 hover:scale-105" />
+            </div>
+            <div class="flex flex-wrap justify-center gap-6 text-xs text-[#a0b4c8] font-mono">
+                <span>ISO 9001 / MSDS CERTIFIED</span>
+                <span>•</span>
+                <span>+40-756 | 230 25990</span>
+                <span>•</span>
+                <span>WWW.VELOX.COM</span>
+            </div>
+            <div class="text-xs text-[#a0b4c8]/60 font-mono">
+                &copy; 2026 VELOX. ALL RIGHTS RESERVED.
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE SCRIPTS -->
+    <script>
+        // --- TRANSLATION SYSTEM ---
+        const i18n = {
+            fr: {
+                navProducts: "Produits",
+                navSimulator: "Simulateur",
+                navDiagnostic: "Diagnostic",
+                navReviews: "Avis",
+                heroBadge: "NANOTECHNOLOGIE DE GRADE AÉROSPATIAL",
+                heroTitle: "Protection Sans Égale",
+                heroSub: "La barrière nanotechnologique ultime pour votre véhicule. Brillance miroir, hydrophobie extrême et dureté certifiée jusqu'à 12H.",
+                heroBtnExplore: "Explorer les Produits",
+                heroBtnDiag: "Diagnostic Intelligent",
+                
+                simTitle: "SIMULATEUR DE PROTECTION",
+                simSubtitle: "Faites glisser le curseur pour voir la différence de protection et choisissez la couleur de votre véhicule",
+                simColorTitle: "Couleur du véhicule",
+                simInfoTitle: "Effets de la protection",
+                simEffect1: "Effet perlant hydrophobe 100%",
+                simEffect2: "Finition miroir ultra-brillante",
+                simEffect3: "Résistance poussière et rayures",
+                simLabelUncoated: "Non Protégé (Dull & Wet)",
+                simLabelCoated: "VELOX BARRIER (Glossy & Hydrophobic)",
+                simWaterSpots: "⚠️ Taches d'eau calcaire",
+                simOxidation: "⚠️ Oxydation & Micro-rayures",
+                simHydroEffect: "💧 Effet Lotus - Contact 120°",
+                simMirrorShine: "✨ Brillance Miroir Profonde",
+
+                diagBadge: "RECOMMANDATION ALGORITHMIQUE",
+                diagTitle: "TROUVEZ VOTRE PROTECTION IDÉALE",
+                diagSubtitle: "Répondez à 3 questions rapides pour que notre algorithme vous propose le traitement adapté.",
+                quizQ1: "Quel est le type de votre véhicule ?",
+                quizO1A: "Voiture Quotidienne",
+                quizO1ADesc: "Utilisation de tous les jours, lavages réguliers.",
+                quizO1B: "Sportive & Prestige",
+                quizO1BDesc: "Supercars, voitures de luxe ou de collection.",
+                quizO1C: "SUV & Tout-Terrain",
+                quizO1CDesc: "Conditions dures, boue, routes montagneuses.",
+                quizQ2: "Quel climat subit principalement votre voiture ?",
+                quizO2A: "Chaud & Ensoleillé",
+                quizO2ADesc: "Forte exposition aux rayons UV & chaleur.",
+                quizO2B: "Pluvieux & Humide",
+                quizO2BDesc: "Fréquence élevée de pluie, boue, sel d'hiver.",
+                quizO2C: "Mixte & Urbain",
+                quizO2CDesc: "Climat modéré, pollution urbaine, sève d'arbre.",
+                quizQ3: "Quel est votre objectif principal ?",
+                quizO3A: "Brillance Miroir",
+                quizO3ADesc: "Finition gloss maximale et éclat spectaculaire.",
+                quizO3B: "Longue Durabilité",
+                quizO3BDesc: "Une protection robuste et durable (5+ ans).",
+                quizO3C: "Protection Absolue",
+                quizO3CDesc: "Une dureté inégalée de 12H et résistance ultime.",
+                quizResultTitle: "RECOMMANDATION DE L'ALGORITHME",
+                quizAddToCart: "AJOUTER AU PANIER",
+                quizResetBtn: "Recommencer le test",
+                quizBackBtn: "Retour",
+
+                productsBadge: "LA GAMME PROTECTRICE",
+                productsTitle: "NOS SOLUTIONS DE PROTECTION",
+                productsSubtitle: "Des formules haute performance brevetées adaptées à chaque besoin de protection.",
+                prod1Sub: "La barrière céramique haute-fidélité — Formule Premium Nano-Matrice",
+                prod1F1: "Protection de dureté 18H",
+                prod1F2: "Perlage d'eau hydrophobe",
+                prod1F3: "Résistance UV et oxydation",
+                prod1F4: "Résistance chimique et acide",
+                prod1F5: "Finition miroir haute brillance",
+                prod1F6: "Protection anti-rayures",
+                prod1F7: "Durabilité : 3 à 5 ans (30 ML)",
+                specHardness: "Dureté",
+                specDurability: "Durabilité",
+                specCapacity: "Capacité",
+                specAngle: "Angle de contact",
+                prodPriceLabel: "Tarif unique",
+                btnOrder: "Commander",
+
+                prod2Sub: "Résistance extrême tous climats — Formule Nano-Technologique",
+                prod2F1: "Protection de dureté 18H",
+                prod2F2: "Perlage d'eau hydrophobe",
+                prod2F3: "Résistance UV et oxydation",
+                prod2F4: "Résistance chimique et acide",
+                prod2F5: "Finition miroir haute brillance",
+                prod2F6: "Protection anti-rayures",
+                prod2F7: "Durabilité : 5 ans et + (50 ML)",
+
+                prod3Sub: "La référence absolue pour peintures et vinyles — Formule Premium Nano-Matrice",
+                prod3F1: "Protection de dureté 18H / 12H",
+                prod3F2: "Perlage d'eau hydrophobe",
+                prod3F3: "Résistance UV et oxydation",
+                prod3F4: "Résistance chimique et acide",
+                prod3F5: "Finition miroir haute brillance",
+                prod3F6: "Protection anti-rayures",
+                prod3F7: "Durabilité : 7 ans et + (50 ML)",
+
+                compTitle: "MATRICE COMPARATIVE",
+                compSubtitle: "Comparez nos formules nano-céramiques pour choisir la barrière parfaite.",
+                compColFeature: "Spécifications",
+                compHardness: "Dureté de protection",
+                compDurability: "Durabilité certifiée",
+                compAngle: "Angle hydrophobe",
+                compResist: "Résistance aux produits",
+                compEase: "Difficulté d'application",
+                compEaseEasy: "Facile (Grand Public)",
+                compEaseMedium: "Intermédiaire",
+                compEaseHard: "Professionnel requis",
+
+                revTitle: "AVIS DE NOS CLIENTS",
+                revSubtitle: "Découvrez l'avis de professionnels et passionnés d'automobile.",
+                revStatTitle: "Score global",
+                revBtnAdd: "LAISSER UN AVIS",
+                formTitle: "Rédiger votre commentaire",
+                formName: "Nom complet",
+                formProduct: "Produit acheté",
+                formRating: "Note globale",
+                formMessage: "Votre commentaire",
+                formCancel: "Annuler",
+                formSubmit: "Soumettre",
+
+                cartTitle: "Panier d'achat",
+                cartPromoBtn: "Appliquer",
+                cartSubtotal: "Sous-total",
+                cartDiscount: "Remise coupon",
+                cartTotal: "Total à payer",
+                cartCheckoutBtn: "Passer au paiement",
+                checkoutBack: "Retour au panier",
+                checkoutDetails: "COORDONNÉES DE LIVRAISON",
+                checkoutName: "Nom complet",
+                checkoutEmail: "Email",
+                checkoutPhone: "Numéro de téléphone",
+                checkoutAddress: "Adresse de livraison",
+                checkoutPayMethod: "Mode de paiement",
+                checkoutPaySimulator: "Simulation de paiement sécurisé",
+                checkoutPayBtn: "Confirmer la commande",
+                successTitle: "COMMANDE CONFIRMÉE !",
+                successSubtitle: "Votre barrière protectrice nanotechnologique Velox est en route.",
+                recId: "ID Commande",
+                recClient: "Destinataire",
+                recEstDelivery: "Livraison estimée",
+                recPaidTotal: "Montant payé",
+                successCloseBtn: "Continuer les achats",
+
+                appTitle: "APPLICATIONS",
+                appSubtitle: "Les revêtements VELOX sont compatibles avec tous les types de finitions de carrosseries.",
+                btnChangeImg: "Modifier l'image"
+            },
+            en: {
+                navProducts: "Products",
+                navSimulator: "Simulator",
+                navDiagnostic: "Diagnostic",
+                navReviews: "Reviews",
+                heroBadge: "AEROSPACE GRADE NANOTECHNOLOGY",
+                heroTitle: "Protection Beyond Compare",
+                heroSub: "The ultimate nanotechnology barrier for your vehicle. Mirror shine, extreme hydrophobicity, and certified hardness up to 12H.",
+                heroBtnExplore: "Explore Products",
+                heroBtnDiag: "Smart Diagnostic",
+                
+                simTitle: "PROTECTION SIMULATOR",
+                simSubtitle: "Slide the cursor to see the difference of protection and choose your vehicle color",
+                simColorTitle: "Vehicle Color",
+                simInfoTitle: "Protection Effects",
+                simEffect1: "100% hydrophobic lotus effect",
+                simEffect2: "Ultra-deep mirror shine",
+                simEffect3: "Dust and scratch resistance",
+                simLabelUncoated: "Unprotected (Dull & Wet)",
+                simLabelCoated: "VELOX BARRIER (Glossy & Hydrophobic)",
+                simWaterSpots: "⚠️ Hard water spots",
+                simOxidation: "⚠️ Oxidation & Swirl marks",
+                simHydroEffect: "💧 Lotus Effect - 120° Angle",
+                simMirrorShine: "✨ Deep Mirror Reflection",
+
+                diagBadge: "ALGORITHMIC RECOMMENDATION",
+                diagTitle: "FIND YOUR IDEAL PROTECTION",
+                diagSubtitle: "Answer 3 quick questions to get custom recommendation from our diagnostic system.",
+                quizQ1: "What is your vehicle type?",
+                quizO1A: "Daily Driver",
+                quizO1ADesc: "Everyday commuting, regular washes.",
+                quizO1B: "Sports & Prestige",
+                quizO1BDesc: "Supercars, exotic or collector vehicles.",
+                quizO1C: "SUV & Off-Road",
+                quizO1CDesc: "Harsh environments, mud, mountain roads.",
+                quizQ2: "What is the primary climate the car experiences?",
+                quizO2A: "Hot & Sunny",
+                quizO2ADesc: "High UV exposure and intense heat.",
+                quizO2B: "Rainy & Wet",
+                quizO2BDesc: "Frequent rain, mud, winter road salt.",
+                quizO2C: "Mixed & Urban",
+                quizO2CDesc: "Moderate weather, city pollution, tree sap.",
+                quizQ3: "What is your primary goal?",
+                quizO3A: "Mirror Gloss",
+                quizO3ADesc: "Maximum mirror finish and spectacular shine.",
+                quizO3B: "Durability",
+                quizO3BDesc: "Robust barrier with longevity (5+ years).",
+                quizO3C: "Absolute Protection",
+                quizO3CDesc: "Revolutionary 12H hardness and ultimate shielding.",
+                quizResultTitle: "ALGORITHM RECOMENDATION",
+                quizAddToCart: "ADD TO CART",
+                quizResetBtn: "Restart quiz",
+                quizBackBtn: "Back",
+
+                productsBadge: "THE SHIELD LINEUP",
+                productsTitle: "OUR PROTECTION BARRIERS",
+                productsSubtitle: "Patented high-performance nanotech formulas suited for every vehicle need.",
+                prod1Sub: "Aerospace High-Fidelity Ceramic — Premium Nano-Matrix Formula",
+                prod1F1: "18H Hardness Protection",
+                prod1F2: "Hydrophobic Water Beading",
+                prod1F3: "UV & Oxidation Resistance",
+                prod1F4: "Chemical & Acid Resistance",
+                prod1F5: "High Gloss Mirror Finish",
+                prod1F6: "Anti-Scratch Protection",
+                prod1F7: "Durability: 3 to 5 years (30 ML)",
+                specHardness: "Hardness",
+                specDurability: "Durability",
+                specCapacity: "Capacity",
+                specAngle: "Contact Angle",
+                prodPriceLabel: "One-time cost",
+                btnOrder: "Buy Now",
+
+                prod2Sub: "Extreme multi-climate durability — Nano-Tech Formula",
+                prod2F1: "18H Hardness Protection",
+                prod2F2: "Hydrophobic Water Beading",
+                prod2F3: "UV & Oxidation Resistance",
+                prod2F4: "Chemical & Acid Resistance",
+                prod2F5: "High Gloss Mirror Finish",
+                prod2F6: "Anti-Scratch Protection",
+                prod2F7: "Durability: 5+ years (50 ML)",
+
+                prod3Sub: "The absolute benchmark for premium wraps — Premium Nano-Matrix Formula",
+                prod3F1: "18H / 12H Hardness Protection",
+                prod3F2: "Hydrophobic Water Beading",
+                prod3F3: "UV & Oxidation Resistance",
+                prod3F4: "Chemical & Acid Resistance",
+                prod3F5: "High Gloss Mirror Finish",
+                prod3F6: "Anti-Scratch Protection",
+                prod3F7: "Durability: 7+ years (50 ML)",
+
+                compTitle: "COMPARISON MATRIX",
+                compSubtitle: "Compare our premium nanotech formulas to choose the perfect barrier.",
+                compColFeature: "Specifications",
+                compHardness: "Protection Hardness",
+                compDurability: "Certified Lifespan",
+                compAngle: "Contact Angle",
+                compResist: "Chemical Resistance",
+                compEase: "Application Skill",
+                compEaseEasy: "Easy (Consumer grade)",
+                compEaseMedium: "Intermediate",
+                compEaseHard: "Professional required",
+
+                revTitle: "CUSTOMER REVIEWS",
+                revSubtitle: "Hear from detailers and automotive enthusiasts worldwide.",
+                revStatTitle: "Global rating",
+                revBtnAdd: "WRITE A REVIEW",
+                formTitle: "Write your review",
+                formName: "Full name",
+                formProduct: "Product purchased",
+                formRating: "Global rating",
+                formMessage: "Your comment",
+                formCancel: "Cancel",
+                formSubmit: "Submit Review",
+
+                cartTitle: "Shopping Cart",
+                cartPromoBtn: "Apply",
+                cartSubtotal: "Subtotal",
+                cartDiscount: "Coupon savings",
+                cartTotal: "Total due",
+                cartCheckoutBtn: "Proceed to Checkout",
+                checkoutBack: "Back to cart",
+                checkoutDetails: "DELIVERY INFORMATION",
+                checkoutName: "Full name",
+                checkoutEmail: "Email",
+                checkoutPhone: "Phone number",
+                checkoutAddress: "Shipping address",
+                checkoutPayMethod: "Payment method",
+                checkoutPaySimulator: "Secured checkout simulation",
+                checkoutPayBtn: "Place Order",
+                successTitle: "ORDER CONFIRMED!",
+                successSubtitle: "Your Velox nanotechnological barrier is prepared for dispatch.",
+                recId: "Order ID",
+                recClient: "Recipient",
+                recEstDelivery: "Estimated Delivery",
+                recPaidTotal: "Total paid",
+                successCloseBtn: "Continue Shopping",
+
+                appTitle: "APPLICATIONS",
+                appSubtitle: "VELOX formulations are perfectly engineered for any exterior finish.",
+                btnChangeImg: "Change Image"
+            },
+            ar: {
+                navProducts: "المنتجات",
+                navSimulator: "المحاكي",
+                navDiagnostic: "التشخيص الذكي",
+                navReviews: "التقييمات",
+                heroBadge: "تقنية النانو المعتمدة من قطاع الطيران",
+                heroTitle: "حماية تفوق المقارنة",
+                heroSub: "الحاجز التكنولوجي النانوي الأمثل لسيارتك. لمعان مرآة، مقاومة فائقة للماء، وصلابة معتمدة تصل إلى 12H.",
+                heroBtnExplore: "استكشف منتجاتنا",
+                heroBtnDiag: "بدء التشخيص الذكي",
+                
+                simTitle: "محاكي الحماية التفاعلي",
+                simSubtitle: "اسحب المؤشر لمشاهدة الفرق المذهل للحماية واختر لون سيارتك",
+                simColorTitle: "لون السيارة",
+                simInfoTitle: "ميزات الحماية",
+                simEffect1: "تأثير لوتس فائق طارد للماء 100%",
+                simEffect2: "لمعان مرآة عميق ومثالي",
+                simEffect3: "مقاومة الخدوش الدقيقة والغبار",
+                simLabelUncoated: "بدون حماية (باهت ورطب)",
+                simLabelCoated: "درع فيلوكس (لامع وطارد للماء)",
+                simWaterSpots: "⚠️ بقع مياه كلسية جافة",
+                simOxidation: "⚠️ بهتان وأكسدة الطلاء",
+                simHydroEffect: "💧 تأثير اللوتس - زاوية تلامس 120 درجة",
+                simMirrorShine: "✨ انعكاس مرآة شديد العمق",
+
+                diagBadge: "التوصية الخوارزمية الذكية",
+                diagTitle: "اكتشف الحماية المثالية لسيارتك",
+                diagSubtitle: "أجب عن 3 أسئلة سريعة ليقترح عليك نظامنا الذكي المنتج الأكثر ملاءمة.",
+                quizQ1: "ما هو نوع سيارتك الرئيسي ؟",
+                quizO1A: "سيارة يومية",
+                quizO1ADesc: "استخدام روتيني يومي، غسيل متكرر.",
+                quizO1B: "رياضية وفاخرة",
+                quizO1BDesc: "سيارات خارقة، سيارات فارهة أو كلاسيكية.",
+                quizO1C: "دفع رباعي وتضاريس",
+                quizO1CDesc: "بيئات قاسية، وحل، طرق جبلية صعبة.",
+                quizQ2: "ما هو المناخ الرئيسي الذي تواجهه السيارة ؟",
+                quizO2A: "حار ومشمس",
+                quizO2ADesc: "تعرض شديد للأشعة فوق البنفسجية والحرارة.",
+                quizO2B: "ممطر ورطب",
+                quizO2BDesc: "أمطار مستمرة، طين، وملح الطرق الشتوي.",
+                quizO2C: "مختلط وحضري",
+                quizO2CDesc: "مناخ معتدل، تلوث المدن، وصمغ الأشجار.",
+                quizQ3: "ما هو هدفك الأساسي من الحماية ؟",
+                quizO3A: "لمعان المرآة الخارق",
+                quizO3ADesc: "الحصول على بريق ولمعان أقصى وعميق.",
+                quizO3B: "الاستدامة الطويلة",
+                quizO3BDesc: "حاجز متين وحماية فائقة تدوم لسنوات طويلة.",
+                quizO3C: "درع الحماية المطلق",
+                quizO3CDesc: "صلابة ثورية غير مسبوقة 12H ومقاومة قصوى.",
+                quizResultTitle: "توصية خوارزمية فيلوكس المخصصة",
+                quizAddToCart: "إضافة إلى السلة",
+                quizResetBtn: "إعادة الاختبار",
+                quizBackBtn: "السابق",
+
+                productsBadge: "سلسلة الدروع الواقية",
+                productsTitle: "حلول الحماية المبتكرة لسيارتك",
+                productsSubtitle: "تركيبات تكنولوجية نانوية متطورة وحائزة على براءات اختراع تلبي متطلباتك بدقة.",
+                prod1Sub: "درع السيراميك والجرافين عالي النقاوة — تركيبة نانو ماتريكس الفاخرة",
+                prod1F1: "حماية صلابة فائقة 18H",
+                prod1F2: "تأثير خرزات الماء الطاردة للرطوبة",
+                prod1F3: "مقاومة تامة للأشعة فوق البنفسجية والأكسدة",
+                prod1F4: "مقاومة فائقة للمواد الكيميائية والأحماض",
+                prod1F5: "لمعان كريستالي مرآتي عميق وجذاب",
+                prod1F6: "حماية متقدمة ضد الخدوش والدوائر",
+                prod1F7: "المتانة: 3 إلى 5 سنوات (30 مل)",
+                specHardness: "الصلابة",
+                specDurability: "المتانة والاستدامة",
+                specCapacity: "السعة",
+                specAngle: "زاوية انزلاق الماء",
+                prodPriceLabel: "تكلفة لمرة واحدة",
+                btnOrder: "اطلب الآن",
+
+                prod2Sub: "متانة فائقة مصممة لكافة الظروف المناخية — تركيبة النانو تكنولوجي المتطورة",
+                prod2F1: "حماية صلابة فائقة 18H",
+                prod2F2: "تأثير خرزات الماء الطاردة للرطوبة",
+                prod2F3: "مقاومة تامة للأشعة فوق البنفسجية والأكسدة",
+                prod2F4: "مقاومة فائقة للمواد الكيميائية والأحماض",
+                prod2F5: "لمعان كريستالي مرآتي عميق وجذاب",
+                prod2F6: "حماية متقدمة ضد الخدوش والدوائر",
+                prod2F7: "المتانة: أكثر من 5 سنوات (50 مل)",
+
+                prod3Sub: "المعيار الذهبي والنهائي لحماية الطلاء وتغليف الفينيل — تركيبة نانو ماتريكس الفاخرة",
+                prod3F1: "حماية صلابة فائقة 18H / 12H",
+                prod3F2: "تأثير خرزات الماء الطاردة للرطوبة",
+                prod3F3: "مقاومة تامة للأشعة فوق البنفسجية والأكسدة",
+                prod3F4: "مقاومة فائقة للمواد الكيميائية والأحماض",
+                prod3F5: "لمعان كريستالي مرآتي عميق وجذاب",
+                prod3F6: "حماية متقدمة ضد الخدوش والدوائر",
+                prod3F7: "المتانة: أكثر من 7 سنوات (50 مل)",
+
+                compTitle: "مصفوفة مقارنة الفروقات لمنتجاتنا",
+                compSubtitle: "قارن تفصيلياً بين تركيباتنا الفاخرة لاختيار درع الحماية المثالي لسيارتك.",
+                compColFeature: "المواصفات التقنية",
+                compHardness: "مستوى صلابة الدرع",
+                compDurability: "العمر الافتراضي المعتمد",
+                compAngle: "زاوية التلامس الطاردة للماء",
+                compResist: "المقاومة الكيميائية والمذيبات",
+                compEase: "مستوى صعوبة التطبيق",
+                compEaseEasy: "سهل (للهواة والمستخدمين)",
+                compEaseMedium: "متوسط (ورش تطبيق مخصصة)",
+                compEaseHard: "محترف (يتطلب مهارة فنية)",
+
+                revTitle: "تقييمات وآراء عملائنا",
+                revSubtitle: "اكتشف ما يقوله خبراء العناية بالسيارات وعشاق التميز عن منتجاتنا.",
+                revStatTitle: "التقييم العام",
+                revBtnAdd: "كتابة تقييم جديد",
+                formTitle: "شاركنا تجربتك وتقييمك للمنتج",
+                formName: "الاسم الكامل",
+                formProduct: "المنتج الذي قمت بشرائه",
+                formRating: "التقييم الإجمالي",
+                formMessage: "اكتب مراجعتك هنا بالتفصيل",
+                formCancel: "إلغاء",
+                formSubmit: "إرسال التقييم",
+
+                cartTitle: "حقيبة المشتريات",
+                cartPromoBtn: "تطبيق الكود",
+                cartSubtotal: "المجموع الفرعي",
+                cartDiscount: "قيمة الخصم بالكود",
+                cartTotal: "إجمالي المبلغ المستحق",
+                cartCheckoutBtn: "الذهاب لصفحة الدفع الآمن",
+                checkoutBack: "العودة لحقيبة التسوق",
+                checkoutDetails: "تفاصيل عنوان التوصيل والشحن",
+                checkoutName: "الاسم الكامل للمستلم",
+                checkoutEmail: "البريد الإلكتروني للعميل",
+                checkoutPhone: "رقم الهاتف للاتصال والتنسيق",
+                checkoutAddress: "عنوان التوصيل السكني بالتفصيل",
+                checkoutPayMethod: "طريقة الدفع المختارة",
+                checkoutPaySimulator: "بوابة محاكاة الدفع الآمنة والمشفرة",
+                checkoutPayBtn: "إتمام عملية الشراء وتأكيد الطلب",
+                successTitle: "تم تأكيد طلبك بنجاح !",
+                successSubtitle: "تم تسجيل طلبك بنجاح وجاري تجهيز درع فيلوكس النانوي لشحنه إليك فوراً.",
+                recId: "رقم الطلب",
+                recClient: "المستلم",
+                recEstDelivery: "موعد التوصيل المتوقع",
+                recPaidTotal: "المبلغ الإجمالي المدفوع",
+                successCloseBtn: "متابعة التسوق واستكشاف المزيد",
+
+                appTitle: "تطبيقات وتوافق المنتج",
+                appSubtitle: "تركيبات فيلوكس المبتكرة صممت لتتلاءم وتلتصق بكافة أنواع الأسطح والطلاءات الخارجية بامتياز.",
+                btnChangeImg: "تغيير الصورة"
+            }
+        };
+
+        let currentLang = 'fr';
+
+        document.getElementById('lang-selector').addEventListener('change', (e) => {
+            setLanguage(e.target.value);
+        });
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const dict = i18n[lang];
+            
+            // Adjust body class and document dir for RTL
+            if (lang === 'ar') {
+                document.body.classList.add('rtl');
+                document.documentElement.dir = 'rtl';
+            } else {
+                document.body.classList.remove('rtl');
+                document.documentElement.dir = 'ltr';
+            }
+
+            // Loop and replace inner texts
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) {
+                    el.textContent = dict[key];
+                }
+            });
+
+            // Adjust form placeholders based on active dictionary
+            const nameInput = document.getElementById('ship-name');
+            const emailInput = document.getElementById('ship-email');
+            const phoneInput = document.getElementById('ship-phone');
+            const addressInput = document.getElementById('ship-address');
+            
+            if (nameInput) nameInput.placeholder = lang === 'ar' ? "محمد أحمد" : "John Doe";
+            if (emailInput) emailInput.placeholder = "mohamed@example.com";
+            if (phoneInput) phoneInput.placeholder = "+212 600-0000";
+            if (addressInput) addressInput.placeholder = lang === 'ar' ? "شارع الملك فهد، الرياض" : "123 High Tech St, Paris";
+
+            // Update simulator UI directions if needed
+            const protectedMask = document.getElementById('protected-mask');
+            const sliderBar = document.getElementById('slider-bar');
+            const val = document.getElementById('sim-range').value;
+            updateSimulatorView(val);
+        }
+
+        // --- INTERACTIVE COATING SIMULATOR ---
+        const rangeInput = document.getElementById('sim-range');
+        const protectedMask = document.getElementById('protected-mask');
+        const sliderBar = document.getElementById('slider-bar');
+
+        rangeInput.addEventListener('input', (e) => {
+            updateSimulatorView(e.target.value);
+        });
+
+        function updateSimulatorView(val) {
+            if (currentLang === 'ar') {
+                // In Arabic RTL, left side of screen is "protected" (since reading goes right to left)
+                // Let's adjust widths accordingly
+                protectedMask.style.width = (100 - val) + "%";
+                sliderBar.style.left = (100 - val) + "%";
+                sliderBar.style.right = "auto";
+            } else {
+                // In LTR, right side of screen is "protected" (width starts from right)
+                protectedMask.style.width = val + "%";
+                sliderBar.style.right = val + "%";
+                sliderBar.style.left = "auto";
+            }
+        }
+
+        function changeCarColor(hex, label) {
+            document.querySelectorAll('.sim-car-body').forEach(path => {
+                path.setAttribute('fill', hex);
+            });
+            document.getElementById('car-color-label').textContent = label;
+        }
+
+        // --- SMART DIAGNOSTIC QUIZ SYSTEM ---
+        let quizAnswers = { 1: '', 2: '', 3: '' };
+        let currentStep = 1;
+
+        function selectQuizOption(step, option) {
+            quizAnswers[step] = option;
+            
+            if (step < 3) {
+                // Transition to next step
+                document.getElementById(`quiz-step-${step}`).classList.add('hidden');
+                currentStep = step + 1;
+                document.getElementById(`quiz-step-${currentStep}`).classList.remove('hidden');
+                
+                // Show back button
+                const backBtn = document.getElementById('quiz-back-btn');
+                backBtn.classList.remove('opacity-0', 'pointer-events-none');
+
+                // Update progress
+                const progressWidth = (currentStep === 2) ? "66%" : "100%";
+                document.getElementById('quiz-progress').style.width = progressWidth;
+            } else {
+                // Step 3 completed -> Calculate recommended product
+                document.getElementById('quiz-step-3').classList.add('hidden');
+                calculateRecommendation();
+            }
+        }
+
+        function quizBack() {
+            if (currentStep > 1) {
+                document.getElementById(`quiz-step-${currentStep}`).classList.add('hidden');
+                currentStep--;
+                document.getElementById(`quiz-step-${currentStep}`).classList.remove('hidden');
+                
+                // Update progress bar
+                const progressWidth = (currentStep === 1) ? "33%" : "66%";
+                document.getElementById('quiz-progress').style.width = progressWidth;
+
+                // Hide back button if we are at step 1
+                if (currentStep === 1) {
+                    const backBtn = document.getElementById('quiz-back-btn');
+                    backBtn.classList.add('opacity-0', 'pointer-events-none');
+                }
+            }
+        }
+
+        let recommendedProductId = 'prod1';
+
+        function calculateRecommendation() {
+            document.getElementById('quiz-progress').style.width = "100%";
+            document.getElementById('quiz-back-btn').classList.add('hidden');
+            
+            // Recommedation Algorithm Logic
+            let recName = '';
+            let recDesc = '';
+            let recHardness = '10H';
+            let recDurability = '3-5 Ans';
+            let recIconText = 'V';
+
+            if (quizAnswers[3] === 'absolute' || quizAnswers[1] === 'sports') {
+                // Diamond Shield 12H recommendation
+                recommendedProductId = 'prod3';
+                recName = 'Diamond Shield 12H';
+                recDesc = currentLang === 'ar' ? 'المعيار الذهبي المطلق لحماية وتلميع هياكل السيارات الفارهة وتغليفات الفينيل بقوة قصوى.' : 'The absolute benchmark for luxury paints and wraps offering maximum scratch defense.';
+                recHardness = '12H';
+                recDurability = currentLang === 'ar' ? '5 - 7 سنوات' : '5-7 Years';
+                recIconText = '💎';
+            } else if (quizAnswers[3] === 'durability' || quizAnswers[1] === 'suv') {
+                // Graphene Ultra 10H recommendation
+                recommendedProductId = 'prod2';
+                recName = 'Graphene Ultra 10H';
+                recDesc = currentLang === 'ar' ? 'الدرع المثالي للتضاريس الصعبة والاستخدامات المتكررة بمقاومة كيميائية ومناخية استثنائية.' : 'Specially formulated for daily commuting with extended lifetime and extreme resistance.';
+                recHardness = '10H+';
+                recDurability = currentLang === 'ar' ? 'أكثر من 5 سنوات' : '5+ Years';
+                recIconText = '🛡️';
+            } else {
+                // Graphene Ceramic Coating recommendation
+                recommendedProductId = 'prod1';
+                recName = 'Graphene Ceramic Coating';
+                recDesc = currentLang === 'ar' ? 'الخيار المثالي للهواة للحصول على لمعان مرآتي وتأثير طارد للمياه عالي الكفاءة.' : 'Perfect entry-level option for deep reflection gloss and superior hydrophobic barrier.';
+                recHardness = '10H';
+                recDurability = currentLang === 'ar' ? '3 - 5 سنوات' : '3-5 Years';
+                recIconText = '✨';
+            }
+
+            document.getElementById('rec-title').textContent = recName;
+            document.getElementById('rec-description').textContent = recDesc;
+            document.getElementById('rec-stat-hardness').textContent = `${i18n[currentLang].specHardness}: ${recHardness}`;
+            document.getElementById('rec-stat-durability').textContent = `${i18n[currentLang].specDurability}: ${recDurability}`;
+            document.getElementById('rec-icon').textContent = recIconText;
+
+            // Show result block
+            document.getElementById('quiz-result').classList.remove('hidden');
+        }
+
+        function addRecommendedToCart() {
+            if (recommendedProductId === 'prod1') {
+                addToCart('prod1', 'Graphene Ceramic Coating', 79.99, 'prod1');
+            } else if (recommendedProductId === 'prod2') {
+                addToCart('prod2', 'Graphene Ultra 10H', 119.99, 'prod2');
+            } else {
+                addToCart('prod3', 'Diamond Shield 12H', 149.99, 'prod3');
+            }
+            toggleCart();
+        }
+
+        function resetQuiz() {
+            quizAnswers = { 1: '', 2: '', 3: '' };
+            currentStep = 1;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-step-1').classList.remove('hidden');
+            document.getElementById('quiz-progress').style.width = "33%";
+            document.getElementById('quiz-back-btn').classList.remove('hidden');
+            document.getElementById('quiz-back-btn').classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        // --- SHOPPING CART & STATE MANAGEMENT ---
+        let cart = [];
+        let couponDiscountRate = 0.0;
+        let appliedCouponCode = "";
+
+        function toggleCart() {
+            const panel = document.getElementById('cart-panel');
+            const backdrop = document.getElementById('cart-backdrop');
+            
+            panel.classList.toggle('translate-x-full');
+            
+            // If Arabic, slides in from the left instead
+            if (currentLang === 'ar') {
+                panel.classList.toggle('rtl-slide');
+            }
+            
+            backdrop.classList.toggle('hidden');
+        }
+
+        function addToCart(id, name, price, imgId) {
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ id, name, price, imgId, qty: 1 });
+            }
+            updateCartUI();
+            
+            // Pulse the badge
+            const badge = document.getElementById('cart-badge');
+            badge.classList.remove('scale-100');
+            badge.classList.add('scale-125');
+            setTimeout(() => {
+                badge.classList.remove('scale-125');
+                badge.classList.add('scale-100');
+            }, 300);
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    cart = cart.filter(i => i.id !== id);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const listContainer = document.getElementById('cart-items-list');
+            listContainer.innerHTML = '';
+
+            let subtotal = 0;
+            let totalItemsCount = 0;
+
+            if (cart.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-12 text-[#a0b4c8] flex flex-col items-center gap-3">
+                        <span class="text-3xl">📭</span>
+                        <p class="text-xs font-mono uppercase" data-i18n="cartEmpty">Votre panier est vide</p>
+                    </div>
+                `;
+                // If arabic translates empty message
+                if (currentLang === 'ar') {
+                    listContainer.querySelector('p').textContent = "حقيبة التسوق فارغة حالياً";
+                }
+            } else {
+                cart.forEach(item => {
+                    subtotal += item.price * item.qty;
+                    totalItemsCount += item.qty;
+
+                    // Colored visual helper for checkout item
+                    let colorDot = 'bg-veloxBlue';
+                    if (item.id === 'prod2') colorDot = 'bg-veloxCyan';
+                    if (item.id === 'prod3') colorDot = 'bg-veloxGold';
+
+                    const itemEl = document.createElement('div');
+                    itemEl.className = "flex items-center justify-between bg-slate-950/60 border border-veloxBorder p-3 rounded-xl gap-3";
+                    itemEl.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="h-10 w-10 rounded-lg ${colorDot}/10 flex items-center justify-center font-bold text-xs text-white border border-veloxBorder">VLX</div>
+                            <div>
+                                <h4 class="text-xs font-bold text-white max-w-[180px] truncate">${item.name}</h4>
+                                <span class="text-[10px] text-veloxCyan font-mono">$${item.price.toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeQty('${item.id}', -1)" class="w-6 h-6 rounded bg-veloxBorder flex items-center justify-center text-xs text-white font-bold hover:bg-[#2c4053] transition-colors">-</button>
+                            <span class="text-xs font-bold text-white font-mono w-4 text-center">${item.qty}</span>
+                            <button onclick="changeQty('${item.id}', 1)" class="w-6 h-6 rounded bg-veloxBorder flex items-center justify-center text-xs text-white font-bold hover:bg-[#2c4053] transition-colors">+</button>
+                        </div>
+                    `;
+                    listContainer.appendChild(itemEl);
+                });
+            }
+
+            // Calculations
+            const discountAmount = subtotal * couponDiscountRate;
+            const totalToPay = Math.max(0, subtotal - discountAmount);
+
+            // Update DOM
+            document.getElementById('cart-subtotal-val').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('cart-total-val').textContent = `$${totalToPay.toFixed(2)}`;
+            document.getElementById('pay-button-total').textContent = `$${totalToPay.toFixed(2)}`;
+
+            if (discountAmount > 0) {
+                document.getElementById('cart-discount-row').classList.remove('hidden');
+                document.getElementById('cart-discount-val').textContent = `-$${discountAmount.toFixed(2)}`;
+            } else {
+                document.getElementById('cart-discount-row').classList.add('hidden');
+            }
+
+            // Update Header Cart badge
+            const badge = document.getElementById('cart-badge');
+            badge.textContent = totalItemsCount;
+            if (totalItemsCount > 0) {
+                badge.classList.remove('scale-0');
+                badge.classList.add('scale-100');
+            } else {
+                badge.classList.remove('scale-100');
+                badge.classList.add('scale-0');
+            }
+        }
+
+        function applyPromoCode() {
+            const val = document.getElementById('promo-code-input').value.trim().toUpperCase();
+            const msg = document.getElementById('promo-msg');
+            
+            if (val === "VELOX20") {
+                couponDiscountRate = 0.20;
+                appliedCouponCode = "VELOX20";
+                msg.textContent = currentLang === 'ar' ? "تمت إضافة الخصم بنجاح -20% !" : "Code VELOX20 appliqué -20% de remise !";
+                msg.className = "text-[11px] font-mono font-bold text-green-400";
+                msg.classList.remove('hidden');
+            } else {
+                couponDiscountRate = 0.0;
+                msg.textContent = currentLang === 'ar' ? "الكود المدخل غير صالح !" : "Code promo invalide.";
+                msg.className = "text-[11px] font-mono font-bold text-red-400";
+                msg.classList.remove('hidden');
+            }
+            updateCartUI();
+        }
+
+        // --- CHECKOUT FORM NAVIGATION ---
+        function showCheckoutForm() {
+            if (cart.length === 0) return;
+            document.getElementById('checkout-form-panel').classList.remove('translate-y-full');
+        }
+
+        function hideCheckoutForm() {
+            document.getElementById('checkout-form-panel').classList.add('translate-y-full');
+        }
+
+        function processSimulatedPayment(event) {
+            event.preventDefault();
+            
+            const scanScreen = document.getElementById('payment-scanning-screen');
+            const scanTitle = document.getElementById('scanning-title');
+            const scanSub = document.getElementById('scanning-subtitle');
+            
+            scanScreen.classList.remove('hidden');
+            scanScreen.classList.add('flex');
+
+            // Phase 1: Cryptography
+            scanTitle.textContent = currentLang === 'ar' ? "تشفير الاتصال الآمن..." : "Chiffrement sécurisé...";
+            scanSub.textContent = currentLang === 'ar' ? "الربط الآمن وبدء تشفير بصمة الدفع..." : "Application de la clé moléculaire sécurisée...";
+
+            setTimeout(() => {
+                // Phase 2: Transacting
+                scanTitle.textContent = currentLang === 'ar' ? "تأكيد بصمة المعاملة..." : "Authentification de la transaction...";
+                scanSub.textContent = currentLang === 'ar' ? "جاري تحويل ومعالجة رصيد الفاتورة..." : "Génération du reçu de transaction nanotechnologique...";
+
+                setTimeout(() => {
+                    // Completed!
+                    scanScreen.classList.add('hidden');
+                    scanScreen.classList.remove('flex');
+
+                    // Populate Receipt screen values
+                    const randId = `VLX-${Math.floor(Math.random() * 90000 + 10000)}-${currentLang.toUpperCase()}`;
+                    document.getElementById('rec-order-id').textContent = randId;
+                    
+                    const clientName = document.getElementById('ship-name').value;
+                    document.getElementById('rec-order-client').textContent = clientName;
+
+                    const paidTotalVal = document.getElementById('cart-total-val').textContent;
+                    document.getElementById('rec-order-total').textContent = paidTotalVal;
+
+                    // Show receipt
+                    document.getElementById('success-receipt-screen').classList.remove('hidden');
+                }, 2000);
+            }, 2000);
+        }
+
+        function closeSuccessScreen() {
+            // Clear cart state
+            cart = [];
+            couponDiscountRate = 0.0;
+            appliedCouponCode = "";
+            document.getElementById('promo-code-input').value = "";
+            document.getElementById('promo-msg').classList.add('hidden');
+            
+            // Clear form
+            document.getElementById('order-delivery-form').reset();
+
+            updateCartUI();
+            
+            // Slide panels back
+            document.getElementById('success-receipt-screen').classList.add('hidden');
+            hideCheckoutForm();
+            toggleCart();
+        }
+
+        // --- REVIEWS DATA & SUBMIT ---
+        let reviews = [
+            {
+                name: "Jean-Marc L.",
+                product: "Diamond Shield 12H",
+                rating: 5,
+                comment: "Traitement appliqué sur ma Porsche 911 noire. Brillance miroir incroyable et protection fantastique contre les éclats de gravillon.",
+                date: "12 Juillet 2026",
+                verified: true
+            },
+            {
+                name: "Sarah M.",
+                product: "Graphene Ceramic Coating",
+                rating: 5,
+                comment: "Incroyable effet perlant ! L'eau glisse instantanément lors du lavage de ma voiture quotidienne. Application facile pour un tel résultat.",
+                date: "02 Juin 2026",
+                verified: true
+            },
+            {
+                name: "Karim B.",
+                product: "Graphene Ultra 10H",
+                rating: 4,
+                comment: "Excellent produit, appliqué il y a 3 mois et le brillant est toujours impeccable. Très résistant à la poussière.",
+                date: "28 Mai 2026",
+                verified: true
+            }
+        ];
+
+        function renderReviews() {
+            const container = document.getElementById('reviews-list');
+            container.innerHTML = '';
+
+            reviews.forEach(rev => {
+                const stars = "★".repeat(rev.rating) + "☆".repeat(5 - rev.rating);
+                
+                const card = document.createElement('div');
+                card.className = "bg-veloxCard/80 border border-veloxBorder p-5 rounded-2xl flex flex-col justify-between gap-3 relative overflow-hidden";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-bold text-sm text-white">${rev.name}</h4>
+                                <span class="text-[10px] text-[#a0b4c8] block mt-0.5">${rev.product}</span>
+                            </div>
+                            <span class="text-xs text-[#a0b4c8]">${rev.date}</span>
+                        </div>
+                        <div class="flex text-amber-400 text-xs mt-2">${stars}</div>
+                        <p class="text-xs text-[#a0b4c8] mt-3 font-light leading-relaxed">${rev.comment}</p>
+                    </div>
+                    ${rev.verified ? `
+                        <div class="mt-2 flex items-center gap-1.5 text-[10px] text-veloxCyan font-mono uppercase">
+                            <span>🛡️</span>
+                            <span>Acheteur Vérifié</span>
+                        </div>
+                    ` : ''}
+                `;
+                // translates badge for arabic
+                if (currentLang === 'ar' && rev.verified) {
+                    card.querySelector('.font-mono').lastElementChild.textContent = "مشتري مؤكد";
+                }
+                container.appendChild(card);
+            });
+        }
+
+        let selectedRating = 5;
+
+        function setFormRating(rating) {
+            selectedRating = rating;
+            const starBtns = document.querySelectorAll('.star-btn');
+            starBtns.forEach((btn, idx) => {
+                if (idx < rating) {
+                    btn.classList.add('text-amber-400');
+                    btn.classList.remove('text-[#a0b4c8]');
+                } else {
+                    btn.classList.remove('text-amber-400');
+                    btn.classList.add('text-[#a0b4c8]');
+                }
+            });
+        }
+
+        function toggleReviewForm() {
+            const panel = document.getElementById('review-form-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function handleReviewSubmit(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('form-input-name').value;
+            const product = document.getElementById('form-input-product').value;
+            const comment = document.getElementById('form-input-comment').value;
+
+            // Generate today date string
+            const now = new Date();
+            const dateStr = `${now.getDate()} ${now.toLocaleString('fr-FR', { month: 'long' })} ${now.getFullYear()}`;
+
+            // Add to reviews list
+            reviews.unshift({
+                name,
+                product,
+                rating: selectedRating,
+                comment,
+                date: dateStr,
+                verified: true
+            });
+
+            // Re-render and recalculate
+            renderReviews();
+            recalculateAverageRating();
+            
+            // Reset form and hide panel
+            document.getElementById('new-review-form').reset();
+            setFormRating(5);
+            toggleReviewForm();
+        }
+
+        function recalculateAverageRating() {
+            const sum = reviews.reduce((total, r) => total + r.rating, 0);
+            const avg = (sum / reviews.length).toFixed(1);
+            document.getElementById('avg-rating-value').textContent = avg;
+            document.getElementById('total-reviews-label').textContent = currentLang === 'ar' ? `على أساس ${reviews.length} تقييمات` : `Sur la base de ${reviews.length} avis`;
+        }
+
+        function handleImageError(imgElement, fallbackId) {
+            imgElement.style.display = 'none';
+            const fallback = document.getElementById(fallbackId);
+            if (fallback) {
+                fallback.classList.remove('hidden');
+                fallback.classList.add('flex');
+            }
+        }
+
+        function previewSelectedImage(input, imgId, fallbackId, storageKey) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Data = e.target.result;
+                    const img = document.getElementById(imgId);
+                    if (img) {
+                        img.src = base64Data;
+                        img.style.display = 'block';
+                    }
+                    
+                    const fallback = document.getElementById(fallbackId);
+                    if (fallback) {
+                        fallback.classList.add('hidden');
+                        fallback.classList.remove('flex');
+                    }
+                    
+                    try {
+                        localStorage.setItem(storageKey, base64Data);
+                    } catch (err) {
+                        console.warn("Storage limit exceeded, image only kept for this session.");
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function loadStoredImages() {
+            const products = [
+                { id: 'img-prod1', fallback: 'prod1-fallback', key: 'prod1-stored-img' },
+                { id: 'img-prod2', fallback: 'prod2-fallback', key: 'prod2-stored-img' },
+                { id: 'img-prod3', fallback: 'prod3-fallback', key: 'prod3-stored-img' }
+            ];
+            products.forEach(p => {
+                const stored = localStorage.getItem(p.key);
+                if (stored) {
+                    const img = document.getElementById(p.id);
+                    if (img) {
+                        img.src = stored;
+                        img.style.display = 'block';
+                        const fallback = document.getElementById(p.fallback);
+                        if (fallback) {
+                            fallback.classList.add('hidden');
+                            fallback.classList.remove('flex');
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- PAGE INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStoredImages();
+            renderReviews();
+            recalculateAverageRating();
+            updateCartUI();
+            setLanguage('fr'); // Starts with french which has been the default language
+        });
+    </script>
+</body>
+</html>

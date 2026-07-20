@@ -1,0 +1,8 @@
+{
+  "name": "Velox Protection",
+  "description": "High-performance surface protection, featuring Graphene Ceramic Coatings and revolutionary Diamond Shield technologies.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

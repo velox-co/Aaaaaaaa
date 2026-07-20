@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="fr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VELOX - Tableau de Bord d'Administration</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              veloxBlue: '#22d3ee',
+              veloxCyan: '#06b6d4',
+              veloxDark: '#030509',
+              veloxBox: '#090d16',
+            }
+          }
+        }
+      }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Space Grotesk', sans-serif;
+        background-color: #030509;
+        background-image: radial-gradient(ellipse at top, rgba(6, 182, 212, 0.08) 0%, rgba(0,0,0,0) 70%);
+      }
+    </style>
+  </head>
+  <body class="text-white min-h-screen p-4 md:p-8 selection:bg-cyan-500/30 selection:text-cyan-200">
+    
+    <div class="max-w-7xl mx-auto space-y-8">
+      
+      <!-- HEADER -->
+      <header class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-white/5 pb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-black text-lg tracking-wider shadow-[0_0_20px_rgba(34,211,238,0.3)]">
+            V
+          </div>
+          <div>
+            <h1 class="text-xl font-bold font-montserrat tracking-wider text-white">VELOX COATING</h1>
+            <p class="text-xs text-cyan-400 font-mono tracking-widest uppercase">Admin Control Center</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-3">
+          <a href="/" class="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all border border-white/10 flex items-center gap-2">
+            ← Retour au Site
+          </a>
+          <button onclick="refreshData()" class="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-black font-semibold rounded-lg text-xs uppercase tracking-wider transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+            <svg class="w-3.5 h-3.5 animate-spin-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 12H16"></path></svg>
+            Actualiser
+          </button>
+        </div>
+      </header>
+
+      <!-- METRICS GRID -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Metric 1 -->
+        <div class="bg-[#090d16] border border-white/5 rounded-xl p-6 relative overflow-hidden group hover:border-cyan-500/30 transition-all duration-300">
+          <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-all duration-300"></div>
+          <p class="text-xs font-mono text-gray-500 uppercase tracking-widest">Total Commandes</p>
+          <div class="flex items-baseline gap-2 mt-2">
+            <span id="stat-orders-count" class="text-4xl font-extrabold text-white">0</span>
+            <span class="text-xs text-cyan-400 font-mono">commandes</span>
+          </div>
+          <div class="h-1 w-full bg-white/5 rounded-full mt-4 overflow-hidden">
+            <div class="h-full bg-cyan-500" style="width: 100%"></div>
+          </div>
+        </div>
+        <!-- Metric 2 -->
+        <div class="bg-[#090d16] border border-white/5 rounded-xl p-6 relative overflow-hidden group hover:border-blue-500/30 transition-all duration-300">
+          <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-all duration-300"></div>
+          <p class="text-xs font-mono text-gray-500 uppercase tracking-widest">Chiffre d'Affaires</p>
+          <div class="flex items-baseline gap-2 mt-2">
+            <span id="stat-revenue" class="text-4xl font-extrabold text-white">0.00 €</span>
+          </div>
+          <div class="h-1 w-full bg-white/5 rounded-full mt-4 overflow-hidden">
+            <div class="h-full bg-blue-500" style="width: 100%"></div>
+          </div>
+        </div>
+        <!-- Metric 3 -->
+        <div class="bg-[#090d16] border border-white/5 rounded-xl p-6 relative overflow-hidden group hover:border-purple-500/30 transition-all duration-300">
+          <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl group-hover:bg-purple-500/10 transition-all duration-300"></div>
+          <p class="text-xs font-mono text-gray-500 uppercase tracking-widest">Inscriptions Newsletter</p>
+          <div class="flex items-baseline gap-2 mt-2">
+            <span id="stat-newsletter-count" class="text-4xl font-extrabold text-white">0</span>
+            <span class="text-xs text-purple-400 font-mono">abonnés</span>
+          </div>
+          <div class="h-1 w-full bg-white/5 rounded-full mt-4 overflow-hidden">
+            <div class="h-full bg-purple-500" style="width: 100%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAYPAL CONFIGURATION PANEL -->
+      <section class="bg-[#090d16] border border-white/5 rounded-xl p-6 hover:border-cyan-500/20 transition-all duration-300">
+        <div class="flex items-center justify-between cursor-pointer" onclick="togglePaypalPanel()">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">⚙️</span>
+            <div>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-white">Lier mon compte PayPal personnel</h2>
+              <p class="text-xs text-gray-500 mt-0.5">Configurez votre Client ID PayPal pour recevoir les paiements directement</p>
+            </div>
+          </div>
+          <span id="paypal-toggle-icon" class="text-gray-400 font-bold transition-transform duration-300 transform rotate-0">▼</span>
+        </div>
+
+        <div id="paypal-config-form-container" class="mt-6 border-t border-white/5 pt-6 hidden">
+          <form id="paypal-config-form" onsubmit="savePaypalConfig(event)" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 space-y-4">
+              <div class="space-y-1">
+                <label class="text-[10px] font-mono text-gray-400 uppercase tracking-wider block">PayPal Client ID (ID Client) *</label>
+                <input id="paypal-client-id" type="text" required placeholder="Ex: AXaG... ou 'test' pour le mode démo" class="w-full bg-black/40 border border-white/10 rounded p-2.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400 font-mono">
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-1">
+                  <label class="text-[10px] font-mono text-gray-400 uppercase tracking-wider block">Mode de fonctionnement *</label>
+                  <select id="paypal-mode" class="w-full bg-black/40 border border-white/10 rounded p-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+                    <option value="sandbox">Sandbox (Test / Simulation)</option>
+                    <option value="live">Live (Paiements Réels)</option>
+                  </select>
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[10px] font-mono text-gray-400 uppercase tracking-wider block">Email PayPal associé (Optionnel)</label>
+                  <input id="paypal-email" type="email" placeholder="votre.compte@paypal.com" class="w-full bg-black/40 border border-white/10 rounded p-2.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400">
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-black/30 border border-white/5 p-4 rounded-lg space-y-3 flex flex-col justify-between">
+              <div class="space-y-2">
+                <span class="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block">💡 Guide d'intégration :</span>
+                <p class="text-[11px] text-gray-400 leading-relaxed">
+                  1. Allez sur <a href="https://developer.paypal.com" target="_blank" class="text-cyan-400 underline hover:text-cyan-300">developer.paypal.com</a> et connectez-vous.<br>
+                  2. Créez une Application REST API sous l'onglet <strong>Apps & Credentials</strong>.<br>
+                  3. Copiez le <strong>Client ID</strong> et collez-le ici.<br>
+                  4. Sauvegardez pour activer instantanément les boutons PayPal sécurisés sur votre site !
+                </p>
+              </div>
+              <button type="submit" class="w-full py-2 bg-cyan-500 hover:bg-cyan-400 text-black font-semibold rounded-lg text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(6,182,212,0.25)]">
+                Sauvegarder la Configuration
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- MAIN CONTENT TABS -->
+      <div class="bg-[#090d16] border border-white/5 rounded-2xl overflow-hidden shadow-2xl">
+        <div class="border-b border-white/5 bg-black/20 flex px-6 py-4 justify-between items-center flex-wrap gap-4">
+          <div class="flex gap-4">
+            <button onclick="switchTab('orders')" id="tab-orders" class="px-4 py-2 border-b-2 border-cyan-400 text-cyan-400 text-xs font-bold uppercase tracking-widest transition-all">
+              📦 Commandes
+            </button>
+            <button onclick="switchTab('newsletter')" id="tab-newsletter" class="px-4 py-2 border-b-2 border-transparent text-gray-400 hover:text-white text-xs font-bold uppercase tracking-widest transition-all">
+              ✉️ Newsletter
+            </button>
+          </div>
+          
+          <button id="btn-export" onclick="exportCSV()" class="px-3.5 py-1.5 bg-white/5 hover:bg-white/10 rounded border border-white/10 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 text-gray-300">
+            📥 Exporter CSV
+          </button>
+        </div>
+
+        <!-- ORDERS VIEW -->
+        <div id="view-orders" class="p-6 overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-white/5 text-[10px] font-mono uppercase text-gray-500 tracking-wider">
+                <th class="py-3 px-4">ID / Date</th>
+                <th class="py-3 px-4">Client</th>
+                <th class="py-3 px-4">Produit</th>
+                <th class="py-3 px-4">Qté / Total</th>
+                <th class="py-3 px-4">Coordonnées</th>
+                <th class="py-3 px-4">Paiement</th>
+                <th class="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body" class="divide-y divide-white/5 text-xs text-gray-300">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+          <div id="orders-empty" class="hidden py-16 text-center text-gray-500 font-mono text-sm">
+            Aucune commande enregistrée pour le moment.
+          </div>
+        </div>
+
+        <!-- NEWSLETTER VIEW -->
+        <div id="view-newsletter" class="hidden p-6 overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-white/5 text-[10px] font-mono uppercase text-gray-500 tracking-wider">
+                <th class="py-3 px-4">Adresse E-mail</th>
+                <th class="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="newsletter-table-body" class="divide-y divide-white/5 text-xs text-gray-300">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+          <div id="newsletter-empty" class="hidden py-16 text-center text-gray-500 font-mono text-sm">
+            Aucun inscrit à la newsletter pour le moment.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-[#090d16] border border-cyan-500/50 rounded-lg p-4 shadow-[0_0_30px_rgba(6,182,212,0.25)] flex items-center gap-3 transition-all duration-300 translate-y-20 opacity-0 pointer-events-none">
+      <div class="w-6 h-6 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400">
+        ✓
+      </div>
+      <p id="toast-message" class="text-xs text-white font-medium"></p>
+    </div>
+
+    <script>
+      let currentTab = 'orders';
+      let ordersData = [];
+      let newsletterData = [];
+
+      function showToast(msg) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-message').textContent = msg;
+        toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+        }, 3000);
+      }
+
+      function switchTab(tab) {
+        currentTab = tab;
+        const oBtn = document.getElementById('tab-orders');
+        const nBtn = document.getElementById('tab-newsletter');
+        const oView = document.getElementById('view-orders');
+        const nView = document.getElementById('view-newsletter');
+
+        if (tab === 'orders') {
+          oBtn.className = "px-4 py-2 border-b-2 border-cyan-400 text-cyan-400 text-xs font-bold uppercase tracking-widest transition-all";
+          nBtn.className = "px-4 py-2 border-b-2 border-transparent text-gray-400 hover:text-white text-xs font-bold uppercase tracking-widest transition-all";
+          oView.classList.remove('hidden');
+          nView.classList.add('hidden');
+        } else {
+          nBtn.className = "px-4 py-2 border-b-2 border-purple-500 text-purple-400 text-xs font-bold uppercase tracking-widest transition-all";
+          oBtn.className = "px-4 py-2 border-b-2 border-transparent text-gray-400 hover:text-white text-xs font-bold uppercase tracking-widest transition-all";
+          nView.classList.remove('hidden');
+          oView.classList.add('hidden');
+        }
+      }
+
+      async function refreshData() {
+        try {
+          // Fetch orders
+          const ordersRes = await fetch('/api/orders');
+          ordersData = await ordersRes.json();
+
+          // Fetch newsletter subscribers
+          const newsRes = await fetch('/api/newsletter');
+          newsletterData = await newsRes.json();
+
+          // Fetch PayPal Config
+          const paypalRes = await fetch('/api/paypal-config');
+          if (paypalRes.ok) {
+            const paypalConfig = await paypalRes.json();
+            document.getElementById('paypal-client-id').value = paypalConfig.paypalClientId || '';
+            document.getElementById('paypal-mode').value = paypalConfig.paypalMode || 'sandbox';
+            document.getElementById('paypal-email').value = paypalConfig.paypalEmail || '';
+          }
+
+          updateDashboard();
+        } catch (err) {
+          console.error(err);
+          showToast("Erreur de synchronisation avec le serveur.");
+        }
+      }
+
+      function updateDashboard() {
+        // Stats
+        document.getElementById('stat-orders-count').textContent = ordersData.length;
+        document.getElementById('stat-newsletter-count').textContent = newsletterData.length;
+
+        const totalRevenue = ordersData.reduce((acc, order) => acc + (parseFloat(order.total) || 0), 0);
+        document.getElementById('stat-revenue').textContent = totalRevenue.toFixed(2) + " €";
+
+        // Render Orders Table
+        const oBody = document.getElementById('orders-table-body');
+        oBody.innerHTML = '';
+        if (ordersData.length === 0) {
+          document.getElementById('orders-empty').classList.remove('hidden');
+        } else {
+          document.getElementById('orders-empty').classList.add('hidden');
+          ordersData.forEach(o => {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-white/5 transition-colors border-b border-white/5";
+            
+            const prodTitle = o.product ? (o.product.title || o.product) : 'Inconnu';
+            
+            let paymentBadge = '';
+            if (o.paymentMethod === 'card') {
+              const last4 = o.paymentDetails && o.paymentDetails.last4 ? `•••• ${o.paymentDetails.last4}` : 'Inconnu';
+              paymentBadge = `
+                <div class="flex flex-col items-start gap-1">
+                  <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 text-[10px] font-bold uppercase tracking-wide border border-cyan-500/20 flex items-center gap-1">
+                    💳 Carte
+                  </span>
+                  <span class="text-[10px] font-mono text-gray-500 ml-1">${last4}</span>
+                </div>
+              `;
+            } else if (o.paymentMethod === 'paypal') {
+              const paypalEmail = o.paymentDetails && o.paymentDetails.email ? o.paymentDetails.email : 'Compte PayPal';
+              paymentBadge = `
+                <div class="flex flex-col items-start gap-1">
+                  <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 text-[10px] font-bold uppercase tracking-wide border border-blue-500/20 flex items-center gap-1">
+                    🅿️ PayPal
+                  </span>
+                  <span class="text-[10px] font-mono text-gray-500 ml-1 truncate max-w-[150px]" title="${paypalEmail}">${paypalEmail}</span>
+                </div>
+              `;
+            } else {
+              paymentBadge = `
+                <span class="px-2 py-0.5 rounded bg-gray-500/10 text-gray-400 text-[10px] font-bold uppercase tracking-wide border border-gray-500/20">
+                  Espèces / Autre
+                </span>
+              `;
+            }
+
+            tr.innerHTML = `
+              <td class="py-4 px-4 font-mono">
+                <span class="text-cyan-400 font-bold block">${o.id}</span>
+                <span class="text-[10px] text-gray-500 block mt-0.5">${o.date}</span>
+              </td>
+              <td class="py-4 px-4 font-bold text-white">
+                ${o.fullName}
+              </td>
+              <td class="py-4 px-4 text-cyan-200">
+                ${prodTitle}
+              </td>
+              <td class="py-4 px-4">
+                <span class="text-gray-400 block">${o.quantity} pcs</span>
+                <span class="text-cyan-400 font-bold font-mono block">${o.total} €</span>
+              </td>
+              <td class="py-4 px-4 space-y-0.5">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] uppercase font-mono text-gray-500">Tél:</span>
+                  <a href="tel:${o.phone}" class="text-gray-300 hover:text-cyan-400 transition-colors font-mono">${o.phone}</a>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] uppercase font-mono text-gray-500">Mail:</span>
+                  <span class="text-gray-400 font-mono">${o.email || 'N/A'}</span>
+                </div>
+                <div class="text-gray-400 text-[11px] mt-1 italic max-w-xs truncate" title="${o.address}, ${o.postalCode || ''} ${o.city}">
+                  ${o.address}, ${o.postalCode || ''} ${o.city}
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                ${paymentBadge}
+              </td>
+              <td class="py-4 px-4 text-right">
+                <button onclick="deleteOrder('${o.id}')" class="px-2.5 py-1.5 bg-red-500/10 hover:bg-red-500 hover:text-white text-red-400 rounded text-[10px] font-bold uppercase transition-all">
+                  Supprimer
+                </button>
+              </td>
+            `;
+            oBody.appendChild(tr);
+          });
+        }
+
+        // Render Newsletter Table
+        const nBody = document.getElementById('newsletter-table-body');
+        nBody.innerHTML = '';
+        if (newsletterData.length === 0) {
+          document.getElementById('newsletter-empty').classList.remove('hidden');
+        } else {
+          document.getElementById('newsletter-empty').classList.add('hidden');
+          newsletterData.forEach(email => {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-white/5 transition-colors border-b border-white/5";
+            tr.innerHTML = `
+              <td class="py-4 px-4 font-mono font-bold text-gray-200">
+                ${email}
+              </td>
+              <td class="py-4 px-4 text-right">
+                <button onclick="deleteSubscriber('${email}')" class="px-2.5 py-1.5 bg-red-500/10 hover:bg-red-500 hover:text-white text-red-400 rounded text-[10px] font-bold uppercase transition-all">
+                  Supprimer
+                </button>
+              </td>
+            `;
+            nBody.appendChild(tr);
+          });
+        }
+      }
+
+      async function deleteOrder(id) {
+        if (!confirm("Voulez-vous vraiment supprimer cette commande ?")) return;
+        try {
+          const res = await fetch(`/api/orders/${id}`, { method: 'DELETE' });
+          if (res.ok) {
+            showToast("Commande supprimée avec succès !");
+            refreshData();
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      async function deleteSubscriber(email) {
+        if (!confirm(`Voulez-vous vraiment désabonner ${email} ?`)) return;
+        try {
+          const res = await fetch(`/api/newsletter/${encodeURIComponent(email)}`, { method: 'DELETE' });
+          if (res.ok) {
+            showToast("Inscrit désabonné avec succès !");
+            refreshData();
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      function exportCSV() {
+        let csvContent = "data:text/csv;charset=utf-8,";
+        let filename = "";
+
+        if (currentTab === 'orders') {
+          filename = "velox_orders_export.csv";
+          csvContent += "ID,Date,Client,Telephone,Email,Produit,Quantite,Total,Adresse,Code Postal,Ville,Mode de Paiement,Details de Paiement\n";
+          ordersData.forEach(o => {
+            const prodTitle = o.product ? (o.product.title || o.product) : 'Inconnu';
+            const payMethodStr = o.paymentMethod === 'card' ? 'Carte bancaire' : (o.paymentMethod === 'paypal' ? 'PayPal' : 'Espèces / Autre');
+            const payDetailsStr = o.paymentMethod === 'card' ? (o.paymentDetails && o.paymentDetails.last4 ? `Card last 4: ${o.paymentDetails.last4}` : '') : (o.paymentMethod === 'paypal' && o.paymentDetails && o.paymentDetails.email ? o.paymentDetails.email : '');
+            const row = [
+              o.id,
+              o.date,
+              `"${o.fullName.replace(/"/g, '""')}"`,
+              `"${o.phone}"`,
+              `"${o.email || ''}"`,
+              `"${prodTitle.replace(/"/g, '""')}"`,
+              o.quantity,
+              o.total,
+              `"${o.address.replace(/"/g, '""')}"`,
+              `"${o.postalCode || ''}"`,
+              `"${o.city.replace(/"/g, '""')}"`,
+              `"${payMethodStr}"`,
+              `"${payDetailsStr.replace(/"/g, '""')}"`
+            ].join(",");
+            csvContent += row + "\n";
+          });
+        } else {
+          filename = "velox_newsletter_subscribers.csv";
+          csvContent += "Email\n";
+          newsletterData.forEach(email => {
+            csvContent += `"${email}"\n`;
+          });
+        }
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      function togglePaypalPanel() {
+        const container = document.getElementById('paypal-config-form-container');
+        const icon = document.getElementById('paypal-toggle-icon');
+        if (container.classList.contains('hidden')) {
+          container.classList.remove('hidden');
+          icon.style.transform = 'rotate(180deg)';
+        } else {
+          container.classList.add('hidden');
+          icon.style.transform = 'rotate(0deg)';
+        }
+      }
+
+      async function savePaypalConfig(e) {
+        e.preventDefault();
+        const paypalClientId = document.getElementById('paypal-client-id').value;
+        const paypalMode = document.getElementById('paypal-mode').value;
+        const paypalEmail = document.getElementById('paypal-email').value;
+
+        try {
+          const res = await fetch('/api/paypal-config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ paypalClientId, paypalMode, paypalEmail })
+          });
+          const data = await res.json();
+          if (res.ok) {
+            showToast("Configuration PayPal enregistrée avec succès !");
+            // Automatically close the panel on success
+            togglePaypalPanel();
+          } else {
+            showToast(data.error || "Une erreur est survenue lors de l'enregistrement.");
+          }
+        } catch (err) {
+          console.error(err);
+          showToast("Erreur de connexion avec le serveur.");
+        }
+      }
+
+      // Initial load
+      refreshData();
+    </script>
+  </body>
+</html>
